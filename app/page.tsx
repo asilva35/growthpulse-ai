@@ -602,7 +602,152 @@ function IntegrationHub() {
   );
 }
 
+function AIActionPlan() {
+
+  const tasks = [
+    { name: "Fix Checkout Latency", impact: 9.4, effort: 2.1, quadrant: "quick-win", color: "#10b981" },
+    { name: "Optimize Meta Ad Creative", impact: 8.8, effort: 3.4, quadrant: "quick-win", color: "#10b981" },
+    { name: "Multi-touch Attribution", impact: 9.1, effort: 8.5, quadrant: "big-bet", color: "#3b82f6" },
+    { name: "Update Meta Tags", impact: 3.2, effort: 1.5, quadrant: "fill-in", color: "#94a3b8" },
+  ];
+
+  const phases = [
+    { 
+      days: "1-30", 
+      title: "Foundation & Quick Wins", 
+      desc: "Critical performance fixes and high-impact optimizations to generate immediate cash flow.",
+      items: ["Latency reduction", "Ad creative refresh", "Broken link audit"]
+    },
+    { 
+      days: "31-60", 
+      title: "Scaling & Optimization", 
+      desc: "Expanding successful channels and implementing advanced audience segmentation.",
+      items: ["Channel diversification", "LTV-based bidding", "A/B testing automation"]
+    },
+    { 
+      days: "61-90", 
+      title: "Advanced Growth Loops", 
+      desc: "Long-term infrastructure and multi-channel attribution for sustainable scaling.",
+      items: ["Attribution model deploy", "Referral loop launch", "Brand lift studies"]
+    }
+  ];
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mt-16">
+      {/* 2x2 Matrix */}
+      <div className="relative aspect-square w-full max-w-xl mx-auto p-8 rounded-3xl bg-neutral-900/30 border border-white/5 backdrop-blur-xl group overflow-hidden">
+        {/* Glows */}
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity" />
+        
+        {/* Axes */}
+        <div className="absolute inset-12 border-l border-b border-white/10">
+          {/* Y Axis Label */}
+          <div className="absolute -left-10 top-0 bottom-0 flex items-center">
+            <span className="text-[10px] transform -rotate-90 uppercase tracking-widest text-neutral-500 font-mono">Impact</span>
+          </div>
+          {/* X Axis Label */}
+          <div className="absolute -bottom-10 left-0 right-0 flex justify-center">
+            <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono">Effort</span>
+          </div>
+          
+          {/* Quadrant Labels */}
+          <div className="absolute top-4 right-4 text-[10px] text-emerald-500 font-mono font-bold uppercase tracking-tighter">High Impact / Low Effort</div>
+        </div>
+
+        {/* Task Bubbles */}
+        <div className="absolute inset-12 pointer-events-none">
+          {tasks.map((task, i) => {
+            const x = task.effort * 10;
+            const y = 100 - (task.impact * 10);
+            
+            return (
+              <motion.div
+                key={i}
+                initial={{ scale: 0, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 + i * 0.15, type: "spring", stiffness: 200, damping: 15 }}
+                style={{ left: `${x}%`, top: `${y}%` }}
+                className="absolute pointer-events-auto"
+              >
+                <div className="relative group/bubble translate-x-[-50%] translate-y-[-50%]">
+                  <div 
+                    className="w-4 h-4 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] cursor-help relative z-10"
+                    style={{ backgroundColor: task.color }}
+                  >
+                    <div className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ backgroundColor: task.color }} />
+                  </div>
+                  
+                  {/* Tooltip */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-40 p-2 bg-neutral-900 border border-white/10 rounded-lg opacity-0 group-hover/bubble:opacity-100 transition-all pointer-events-none z-20 shadow-2xl">
+                    <p className="text-[10px] text-white font-bold leading-tight">{task.name}</p>
+                    <div className="mt-1 flex justify-between text-[8px] font-mono">
+                      <span className="text-emerald-400">IMPACT: {task.impact}</span>
+                      <span className="text-neutral-500">EFFORT: {task.effort}</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Roadmap Timeline */}
+      <div className="space-y-8">
+        {phases.map((phase, i) => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8 + i * 0.2 }}
+            className="flex gap-6 relative"
+          >
+            {/* Thread */}
+            {i !== phases.length - 1 && (
+              <div className="absolute left-6 top-12 bottom-[-32px] w-px bg-neutral-800" />
+            )}
+            
+            <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center font-mono text-xs font-bold text-neutral-400 relative z-10">
+              D{phase.days}
+            </div>
+            
+            <div className="pt-1">
+              <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-3">
+                {phase.title}
+                {i === 0 && <Badge className="bg-emerald-500/10 text-emerald-500 text-[8px] border-none py-0">AUTO-PRIORITIZED</Badge>}
+              </h4>
+              <p className="text-sm text-neutral-400 leading-relaxed mb-4">{phase.desc}</p>
+              <div className="flex flex-wrap gap-2">
+                {phase.items.map((item, j) => (
+                  <span key={j} className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-950 border border-neutral-800 text-neutral-500 font-mono">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 1.5 }}
+          className="pt-6"
+        >
+          <Button variant="outline" className="h-12 border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-400 font-bold tracking-tight w-full sm:w-auto">
+            <Activity className="mr-2 w-4 h-4" /> Download Executive PDF Report
+          </Button>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
 function MainContent() {
+
 
   const [headlineVariant, setHeadlineVariant] = useState<"A" | "B">("A");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -728,10 +873,10 @@ function MainContent() {
           </div>
 
           {/*Interactive Mockup Image */}
-          {/* <div className="py-12">
-            <Image src="/assets/images/mockup.png" alt="Mockup" width={1200} height={800} />
-          </div> */}
-          <InteractiveMockup />
+          <div className="py-12">
+            <Image src="/assets/images/mockup-02.png" alt="Mockup" width={1200} height={800} />
+          </div>
+          {/* <InteractiveMockup /> */}
 
         </section>
       </AuroraBackground>
@@ -865,12 +1010,35 @@ function MainContent() {
         </div>
       </section>
 
+      {/* AI Action Plan Section */}
+      <section className="py-32 px-6 lg:px-12 bg-neutral-950/50 border-y border-neutral-900 relative overflow-hidden">
+        {/* Background Details */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none mt-[-100px]" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <Badge variant="outline" className="mb-4 border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
+              Intelligence Engine
+            </Badge>
+            <h2 className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">AI-Generated Action Plan</h2>
+            <p className="text-neutral-400 max-w-2xl mx-auto text-lg leading-relaxed">
+              Produces a prioritized 90-day roadmap with specific recommendations ranked by expected impact and effort.
+            </p>
+          </motion.div>
 
-
+          <AIActionPlan />
+        </div>
+      </section>
 
       {/* Social Proof */}
       <section className="py-12 border-y border-neutral-900/50 bg-neutral-950 px-6">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+
           <div className="flex gap-8 md:gap-16">
             <div>
               <p className="text-4xl font-bold text-white mb-1">500+</p>
