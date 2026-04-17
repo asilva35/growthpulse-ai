@@ -1552,13 +1552,70 @@ function MainContent() {
       </section>
 
 
-      <footer className="py-12 border-t border-neutral-900 bg-neutral-950 text-center flex flex-col items-center">
-        <div className="flex items-center gap-2 font-bold mb-6 text-neutral-600">
-          <Activity className="w-5 h-5" />
-          <span>GrowthPulse AI</span>
+      <footer className="py-24 px-6 lg:px-12 border-t border-neutral-900 bg-neutral-950">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-24">
+          {/* Brand Column */}
+          <div className="col-span-2 md:col-span-1 space-y-6">
+            <div className="flex items-center gap-2 font-bold text-xl tracking-tight text-white">
+              <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
+                <Activity className="w-5 h-5 text-white" />
+              </div>
+              <span>GrowthPulse<span className="text-emerald-500">AI</span></span>
+            </div>
+            <p className="text-sm text-neutral-500 leading-relaxed">
+              The honest friend who reads your dashboards and tells you exactly how to scale. High-performance growth engineering for modern teams.
+            </p>
+            <div className="flex gap-4">
+               <div className="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center hover:border-emerald-500/50 transition-colors cursor-pointer">
+                 <Globe className="w-4 h-4 text-neutral-400" />
+               </div>
+               <div className="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center hover:border-emerald-500/50 transition-colors cursor-pointer">
+                 <Share2 className="w-4 h-4 text-neutral-400" />
+               </div>
+            </div>
+          </div>
+
+          {/* Product */}
+          <div>
+            <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-[10px]">Product</h4>
+            <ul className="space-y-4">
+              {["Features", "Integrations", "Pricing", "Action Plans", "Report Engine"].map((link) => (
+                <li key={link}><a href="#" className="text-sm text-neutral-500 hover:text-emerald-400 transition-colors">{link}</a></li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-[10px]">Company</h4>
+            <ul className="space-y-4">
+              {["About Us", "Careers", "Contact", "Press", "Partners"].map((link) => (
+                <li key={link}><a href="#" className="text-sm text-neutral-500 hover:text-emerald-400 transition-colors">{link}</a></li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-[10px]">Legal</h4>
+            <ul className="space-y-4">
+              {["Privacy Policy", "Terms of Service", "Cookie Policy", "Security", "GDPR"].map((link) => (
+                <li key={link}><a href="#" className="text-sm text-neutral-500 hover:text-emerald-400 transition-colors">{link}</a></li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <p className="text-sm text-neutral-600">© 2026 GrowthPulse AI. All rights reserved.</p>
+
+        <div className="max-w-7xl mx-auto mt-24 pt-8 border-t border-neutral-900/50 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-neutral-600 font-mono italic">
+            &quot;Scaling is hard. We make it data-driven.&quot;
+          </p>
+          <p className="text-xs text-neutral-600">
+            © 2026 GrowthPulse AI. Built for the next generation of growth engineers.
+          </p>
+        </div>
       </footer>
+
 
       <LeadFormDialog isOpen={isModalOpen} onOpenChange={setIsModalOpen} variant={headlineVariant} />
 
