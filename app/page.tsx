@@ -355,6 +355,12 @@ function MainContent() {
     if (scrolledPos === 90) console.log("[Analytics] Scroll Depth: 90%");
   }, [scrolledPos]);
 
+  // Mock Dashboard Hover States
+  const [isAcquisitionHovered, setIsAcquisitionHovered] = useState(false);
+  const [isSEOHovered, setIsSEOHovered] = useState(false);
+  const [isPaidMediaHovered, setIsPaidMediaHovered] = useState(false);
+
+
   const handleCTA = () => {
     console.log("[Analytics] CTA Clicked:", { variant: headlineVariant });
     setIsModalOpen(true);
@@ -429,17 +435,18 @@ function MainContent() {
 
           {/* Interactive UI Mockup */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-20 w-full max-w-5xl rounded-xl border border-white/10 bg-white/5 backdrop-blur-2xl p-4 shadow-2xl z-10 relative overflow-hidden"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-20 w-full max-w-5xl rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg p-4 shadow-2xl z-10 relative overflow-hidden transform-gpu"
           >
-            {/* Live Scanning Effect */}
-            <motion.div 
-              className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-emerald-500 to-transparent opacity-50 z-20 pointer-events-none"
+            {/* Live Scanning Effect - Optimized with transform-gpu */}
+            <motion.div
+              className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-emerald-500 to-transparent opacity-30 z-20 pointer-events-none transform-gpu"
               animate={{ x: ['0%', '1000%'] }}
-              transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
+              transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
             />
+
             {/* Window Controls & Connection Pulses */}
             <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
               <div className="flex items-center gap-2">
@@ -453,51 +460,104 @@ function MainContent() {
                 <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Google Analytics</span>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              
+
               {/* Acquisition Widget (2x1 on desktop) */}
-              <div className="md:col-span-2 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-emerald-500/20 transition-colors">
+              <div
+                onMouseEnter={() => setIsAcquisitionHovered(true)}
+                onMouseLeave={() => setIsAcquisitionHovered(false)}
+                className="md:col-span-2 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-emerald-500/20 transition-all duration-300"
+              >
                 <div className="flex justify-between items-start mb-6 text-emerald-400 font-mono text-sm uppercase">
                   <span>Acquisition</span>
-                  <Badge variant="outline" className="bg-emerald-500/20 text-emerald-400 border-none font-mono">+32% ROI</Badge>
+                  <motion.div animate={{ scale: isAcquisitionHovered ? 1.1 : 1 }}>
+                    <Badge variant="outline" className={`border-none font-mono transition-colors duration-300 ${isAcquisitionHovered ? "bg-emerald-400 text-black" : "bg-emerald-500/20 text-emerald-400"}`}>
+                      {isAcquisitionHovered ? "+48% ROI" : "+32% ROI"}
+                    </Badge>
+                  </motion.div>
                 </div>
-                <div className="flex items-end gap-1 h-12 w-full opacity-70 group-hover:opacity-100 transition-opacity">
-                   {[40, 55, 45, 60, 50, 75, 65, 90, 80, 100].map((h, i) => (
-                    <motion.div key={i} initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: i * 0.05 + 1.2 }} className="flex-1 bg-emerald-500 rounded-t-sm" />
-                   ))}
+                <div className="flex items-end gap-1 h-12 w-full transition-opacity">
+                  {[40, 55, 45, 60, 50, 75, 65, 90, 80, 100].map((h, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ height: 0 }}
+                      animate={{ height: isAcquisitionHovered ? `${Math.min(h + 15, 100)}%` : `${h}%` }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                        delay: isAcquisitionHovered ? 0 : i * 0.02 + 0.8
+                      }}
+                      className={`flex-1 rounded-t-sm transform-gpu transition-colors duration-300 ${isAcquisitionHovered ? "bg-emerald-400" : "bg-emerald-500"}`}
+                    />
+                  ))}
                 </div>
               </div>
+
 
               {/* SEO Health Widget (1x1) */}
-              <div className="md:col-span-1 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-blue-500/20 transition-colors">
-                 <div className="text-blue-400 font-mono text-sm uppercase flex items-center gap-2 mb-2">
-                   <Globe className="w-4 h-4" /> SEO Health
-                 </div>
-                 <div className="flex justify-center flex-1 items-center relative">
-                   <svg className="w-20 h-20 -rotate-90" viewBox="0 0 100 100">
-                     <circle cx="50" cy="50" r="45" fill="transparent" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
-                     <motion.circle cx="50" cy="50" r="45" fill="transparent" stroke="currentColor" strokeWidth="10" strokeDasharray="283" initial={{ strokeDashoffset: 283 }} animate={{ strokeDashoffset: 283 - (283 * 0.92) }} transition={{ duration: 1.5, delay: 1 }} className="text-blue-500" />
-                   </svg>
-                   <div className="absolute inset-0 flex items-center justify-center font-mono font-bold text-xl text-white">92</div>
-                 </div>
+              <div
+                onMouseEnter={() => setIsSEOHovered(true)}
+                onMouseLeave={() => setIsSEOHovered(false)}
+                className="md:col-span-1 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-blue-500/20 transition-all duration-300"
+              >
+                <div className="text-blue-400 font-mono text-sm uppercase flex items-center gap-2 mb-2">
+                  <Globe className="w-4 h-4" /> SEO Health
+                </div>
+                <div className="flex justify-center flex-1 items-center relative">
+                  <svg className="w-20 h-20 -rotate-90 transform-gpu" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="transparent" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
+                    <motion.circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="10"
+                      strokeDasharray="283"
+                      initial={{ strokeDashoffset: 283 }}
+                      animate={{ strokeDashoffset: 283 - (283 * (isSEOHovered ? 0.98 : 0.92)) }}
+                      transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                      className="text-blue-500 transform-gpu"
+                    />
+                  </svg>
+
+                  <motion.div
+                    animate={{ scale: isSEOHovered ? 1.2 : 1 }}
+                    className="absolute inset-0 flex items-center justify-center font-mono font-bold text-xl text-white transition-colors duration-300"
+                  >
+                    {isSEOHovered ? "98" : "92"}
+                  </motion.div>
+                </div>
               </div>
 
-               {/* Paid Media Efficiency Widget (1x1) */}
-              <div className="md:col-span-1 rounded-lg bg-white/5 border border-amber-500/10 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-amber-500/30 transition-colors">
+
+              {/* Paid Media Efficiency Widget (1x1) */}
+              <div
+                onMouseEnter={() => setIsPaidMediaHovered(true)}
+                onMouseLeave={() => setIsPaidMediaHovered(false)}
+                className="md:col-span-1 rounded-lg bg-white/5 border border-amber-500/10 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-amber-500/30 transition-all duration-300"
+              >
                 <div className="text-amber-400 font-mono text-xs uppercase flex items-center gap-2 mb-2">
                   <DollarSign className="w-4 h-4" /> Paid Media
                 </div>
                 <div>
                   <p className="text-[10px] text-neutral-400 font-mono mb-1">Current ROAS</p>
-                  <p className="text-2xl font-bold font-mono text-white mb-3">4.2x</p>
-                  
+                  <motion.p
+                    animate={{ y: isPaidMediaHovered ? -2 : 0, color: isPaidMediaHovered ? "#fbbf24" : "#ffffff" }}
+                    className="text-2xl font-bold font-mono text-white mb-3"
+                  >
+                    {isPaidMediaHovered ? "5.8x" : "4.2x"}
+                  </motion.p>
+
                   <div className="h-[1px] w-full bg-white/10 my-2"></div>
-                  
+
                   <p className="text-[10px] text-neutral-400 font-mono mb-1">Industry Benchmark</p>
                   <p className="text-sm font-medium font-mono text-neutral-300">2.8x</p>
                 </div>
               </div>
+
 
               {/* AI Action Plan Widget (Full Width) */}
               <div className="md:col-span-4 rounded-lg bg-white/5 border border-white/5 p-5">
@@ -508,21 +568,21 @@ function MainContent() {
                   <div className="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-emerald-500/20 transition-colors">
                     <div>
                       <p className="text-sm text-white font-medium">Reallocate PMax Spend</p>
-                      <p className="text-xs text-emerald-400 font-mono mt-1 flex items-center gap-1"><ArrowRight className="w-3 h-3"/> +$12k ROI</p>
+                      <p className="text-xs text-emerald-400 font-mono mt-1 flex items-center gap-1"><ArrowRight className="w-3 h-3" /> +$12k ROI</p>
                     </div>
                     <Badge variant="outline" className="bg-emerald-500/20 text-emerald-400 border-none text-[10px]">High Impact</Badge>
                   </div>
                   <div className="bg-white/5 border border-white/10 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-white/10 transition-colors">
                     <div>
                       <p className="text-sm text-white font-medium">Fix Cart Abandonment</p>
-                      <p className="text-xs text-blue-400 font-mono mt-1 flex items-center gap-1"><Settings className="w-3 h-3"/> Dev Task</p>
+                      <p className="text-xs text-blue-400 font-mono mt-1 flex items-center gap-1"><Settings className="w-3 h-3" /> Dev Task</p>
                     </div>
                     <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-none text-[10px]">Med Impact</Badge>
                   </div>
                   <div className="bg-amber-500/5 border border-amber-500/20 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-amber-500/10 transition-colors">
                     <div>
                       <p className="text-sm text-white font-medium">Update Canonical Tags</p>
-                      <p className="text-xs text-amber-400 font-mono mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> Crucial Fix</p>
+                      <p className="text-xs text-amber-400 font-mono mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Crucial Fix</p>
                     </div>
                     <Badge variant="outline" className="bg-amber-500/20 text-amber-400 border-none text-[10px]">Low Effort</Badge>
                   </div>
@@ -534,44 +594,6 @@ function MainContent() {
 
         </section>
       </AuroraBackground>
-
-      {/* Social Proof */}
-      <section className="py-12 border-y border-neutral-900/50 bg-neutral-950 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className="flex gap-8 md:gap-16">
-            <div>
-              <p className="text-4xl font-bold text-white mb-1">500+</p>
-              <p className="text-sm text-neutral-500 font-medium">Companies Audited</p>
-            </div>
-            <div>
-              <p className="text-4xl font-bold text-emerald-400 mb-1">32%</p>
-              <p className="text-sm text-neutral-500 font-medium">Avg ROI Lift</p>
-            </div>
-            <div>
-              <p className="text-4xl font-bold text-white mb-1">4.8/5</p>
-              <p className="text-sm text-neutral-500 font-medium">User Rating</p>
-            </div>
-          </div>
-
-          <div className="h-px w-full lg:w-px lg:h-16 bg-neutral-800"></div>
-
-          <div className="flex-1">
-            <p className="text-lg text-neutral-300 italic mb-4">&quot;Growth Pulse found $140K in wasted ad spend we didn&apos;t know about. It paid for itself in hours.&quot;</p>
-            <p className="text-sm text-neutral-500 font-bold tracking-wide uppercase">VP Marketing, FictionalTech</p>
-          </div>
-
-        </div>
-
-        <div className="max-w-4xl mx-auto mt-16 text-center">
-          <p className="text-xs text-neutral-600 font-semibold uppercase tracking-widest mb-6">Trusted by scaling teams</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale">
-            {/* Fake Logos using icons/text */}
-            <div className="flex items-center gap-2 font-bold text-xl"><Globe className="w-6 h-6" /> VertexData</div>
-            <div className="flex items-center gap-2 font-bold text-xl"><PieChart className="w-6 h-6" /> SynapseHQ</div>
-            <div className="flex items-center gap-2 font-bold text-xl"><Layers className="w-6 h-6" /> OmniScale</div>
-          </div>
-        </div>
-      </section>
 
       {/* Bento Grid Features */}
       <section className="py-32 px-6 lg:px-12 max-w-7xl mx-auto overflow-hidden">
@@ -668,6 +690,43 @@ function MainContent() {
         </div>
       </section>
 
+      {/* Social Proof */}
+      <section className="py-12 border-y border-neutral-900/50 bg-neutral-950 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+          <div className="flex gap-8 md:gap-16">
+            <div>
+              <p className="text-4xl font-bold text-white mb-1">500+</p>
+              <p className="text-sm text-neutral-500 font-medium">Companies Audited</p>
+            </div>
+            <div>
+              <p className="text-4xl font-bold text-emerald-400 mb-1">32%</p>
+              <p className="text-sm text-neutral-500 font-medium">Avg ROI Lift</p>
+            </div>
+            <div>
+              <p className="text-4xl font-bold text-white mb-1">4.8/5</p>
+              <p className="text-sm text-neutral-500 font-medium">User Rating</p>
+            </div>
+          </div>
+
+          <div className="h-px w-full lg:w-px lg:h-16 bg-neutral-800"></div>
+
+          <div className="flex-1">
+            <p className="text-lg text-neutral-300 italic mb-4">&quot;Growth Pulse found $140K in wasted ad spend we didn&apos;t know about. It paid for itself in hours.&quot;</p>
+            <p className="text-sm text-neutral-500 font-bold tracking-wide uppercase">VP Marketing, FictionalTech</p>
+          </div>
+
+        </div>
+
+        <div className="max-w-4xl mx-auto mt-16 text-center">
+          <p className="text-xs text-neutral-600 font-semibold uppercase tracking-widest mb-6">Trusted by scaling teams</p>
+          <div className="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale">
+            {/* Fake Logos using icons/text */}
+            <div className="flex items-center gap-2 font-bold text-xl"><Globe className="w-6 h-6" /> VertexData</div>
+            <div className="flex items-center gap-2 font-bold text-xl"><PieChart className="w-6 h-6" /> SynapseHQ</div>
+            <div className="flex items-center gap-2 font-bold text-xl"><Layers className="w-6 h-6" /> OmniScale</div>
+          </div>
+        </div>
+      </section>
 
       {/* Pricing Section */}
       <section className="py-32 px-6 lg:px-12 max-w-7xl mx-auto bg-neutral-950 border-t border-neutral-900">
