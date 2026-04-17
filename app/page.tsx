@@ -612,21 +612,21 @@ function AIActionPlan() {
   ];
 
   const phases = [
-    { 
-      days: "1-30", 
-      title: "Foundation & Quick Wins", 
+    {
+      days: "1-30",
+      title: "Foundation & Quick Wins",
       desc: "Critical performance fixes and high-impact optimizations to generate immediate cash flow.",
       items: ["Latency reduction", "Ad creative refresh", "Broken link audit"]
     },
-    { 
-      days: "31-60", 
-      title: "Scaling & Optimization", 
+    {
+      days: "31-60",
+      title: "Scaling & Optimization",
       desc: "Expanding successful channels and implementing advanced audience segmentation.",
       items: ["Channel diversification", "LTV-based bidding", "A/B testing automation"]
     },
-    { 
-      days: "61-90", 
-      title: "Advanced Growth Loops", 
+    {
+      days: "61-90",
+      title: "Advanced Growth Loops",
       desc: "Long-term infrastructure and multi-channel attribution for sustainable scaling.",
       items: ["Attribution model deploy", "Referral loop launch", "Brand lift studies"]
     }
@@ -638,7 +638,18 @@ function AIActionPlan() {
       <div className="relative aspect-square w-full max-w-xl mx-auto p-8 rounded-3xl bg-neutral-900/30 border border-white/5 backdrop-blur-xl group overflow-hidden">
         {/* Glows */}
         <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity" />
-        
+        {/* Background Grids */}
+        <div className="absolute inset-12 pointer-events-none overflow-hidden">
+          {/* Horizontal Lines */}
+          {Array.from({ length: 5 }).map((_, i) => (
+             <div key={`h-${i}`} className="absolute left-0 right-0 h-px bg-white/[0.03]" style={{ top: `${(i + 1) * 20}%` }} />
+          ))}
+          {/* Vertical Lines */}
+          {Array.from({ length: 5 }).map((_, i) => (
+             <div key={`v-${i}`} className="absolute top-0 bottom-0 w-px bg-white/[0.03]" style={{ left: `${(i + 1) * 20}%` }} />
+          ))}
+        </div>
+
         {/* Axes */}
         <div className="absolute inset-12 border-l border-b border-white/10">
           {/* Y Axis Label */}
@@ -649,7 +660,7 @@ function AIActionPlan() {
           <div className="absolute -bottom-10 left-0 right-0 flex justify-center">
             <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono">Effort</span>
           </div>
-          
+
           {/* Quadrant Labels */}
           <div className="absolute top-4 right-4 text-[10px] text-emerald-500 font-mono font-bold uppercase tracking-tighter">High Impact / Low Effort</div>
         </div>
@@ -659,7 +670,7 @@ function AIActionPlan() {
           {tasks.map((task, i) => {
             const x = task.effort * 10;
             const y = 100 - (task.impact * 10);
-            
+
             return (
               <motion.div
                 key={i}
@@ -671,13 +682,13 @@ function AIActionPlan() {
                 className="absolute pointer-events-auto"
               >
                 <div className="relative group/bubble translate-x-[-50%] translate-y-[-50%]">
-                  <div 
+                  <div
                     className="w-4 h-4 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] cursor-help relative z-10"
                     style={{ backgroundColor: task.color }}
                   >
                     <div className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ backgroundColor: task.color }} />
                   </div>
-                  
+
                   {/* Tooltip */}
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-40 p-2 bg-neutral-900 border border-white/10 rounded-lg opacity-0 group-hover/bubble:opacity-100 transition-all pointer-events-none z-20 shadow-2xl">
                     <p className="text-[10px] text-white font-bold leading-tight">{task.name}</p>
@@ -696,7 +707,7 @@ function AIActionPlan() {
       {/* Roadmap Timeline */}
       <div className="space-y-8">
         {phases.map((phase, i) => (
-          <motion.div 
+          <motion.div
             key={i}
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -708,11 +719,11 @@ function AIActionPlan() {
             {i !== phases.length - 1 && (
               <div className="absolute left-6 top-12 bottom-[-32px] w-px bg-neutral-800" />
             )}
-            
+
             <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center font-mono text-xs font-bold text-neutral-400 relative z-10">
               D{phase.days}
             </div>
-            
+
             <div className="pt-1">
               <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-3">
                 {phase.title}
@@ -1014,7 +1025,7 @@ function MainContent() {
       <section className="py-32 px-6 lg:px-12 bg-neutral-950/50 border-y border-neutral-900 relative overflow-hidden">
         {/* Background Details */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none mt-[-100px]" />
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
