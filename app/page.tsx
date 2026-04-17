@@ -127,9 +127,11 @@ function LeadFormDialog({ isOpen, onOpenChange, variant }: { isOpen: boolean, on
                     id="adSpend"
                     name="adSpend"
                     required
+                    defaultValue=""
                     className="flex h-9 w-full rounded-md border border-neutral-800 bg-neutral-950 px-3 py-1 pl-9 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500 md:text-sm appearance-none text-neutral-200"
                   >
-                    <option value="" disabled selected>Select an option</option>
+                    <option value="" disabled>Select an option</option>
+
                     <option value="<10k">Less than $10k</option>
                     <option value="10k-50k">$10k - $50k</option>
                     <option value="50k-250k">$50k - $250k</option>
@@ -602,13 +604,13 @@ function IntegrationHub() {
   );
 }
 
-function AIActionPlan() {
+function AIActionPlan({ handleCTA }: { handleCTA: () => void }) {
 
   const tasks = [
-    { name: "Fix Checkout Latency", impact: 9.4, effort: 2.1, quadrant: "quick-win", color: "#10b981" },
-    { name: "Optimize Meta Ad Creative", impact: 8.8, effort: 3.4, quadrant: "quick-win", color: "#10b981" },
-    { name: "Multi-touch Attribution", impact: 9.1, effort: 8.5, quadrant: "big-bet", color: "#3b82f6" },
-    { name: "Update Meta Tags", impact: 3.2, effort: 1.5, quadrant: "fill-in", color: "#94a3b8" },
+    { name: "Fix Checkout Latency", impact: 4.4, effort: 2.1, quadrant: "quick-win", color: "#10b981" },
+    { name: "Optimize Meta Ad Creative", impact: 6.8, effort: 3.4, quadrant: "quick-win", color: "#10b981" },
+    { name: "Multi-touch Attribution", impact: 8.5, effort: 5.5, quadrant: "big-bet", color: "#3b82f6" },
+    { name: "Update Meta Tags", impact: 1.5, effort: 1.5, quadrant: "fill-in", color: "#94a3b8" },
   ];
 
   const phases = [
@@ -642,11 +644,11 @@ function AIActionPlan() {
         <div className="absolute inset-12 pointer-events-none overflow-hidden">
           {/* Horizontal Lines */}
           {Array.from({ length: 5 }).map((_, i) => (
-             <div key={`h-${i}`} className="absolute left-0 right-0 h-px bg-white/[0.03]" style={{ top: `${(i + 1) * 20}%` }} />
+            <div key={`h-${i}`} className="absolute left-0 right-0 h-px bg-white/[0.03]" style={{ top: `${(i + 1) * 20}%` }} />
           ))}
           {/* Vertical Lines */}
           {Array.from({ length: 5 }).map((_, i) => (
-             <div key={`v-${i}`} className="absolute top-0 bottom-0 w-px bg-white/[0.03]" style={{ left: `${(i + 1) * 20}%` }} />
+            <div key={`v-${i}`} className="absolute top-0 bottom-0 w-px bg-white/[0.03]" style={{ left: `${(i + 1) * 20}%` }} />
           ))}
         </div>
 
@@ -662,7 +664,7 @@ function AIActionPlan() {
           </div>
 
           {/* Quadrant Labels */}
-          <div className="absolute top-4 right-4 text-[10px] text-emerald-500 font-mono font-bold uppercase tracking-tighter">High Impact / Low Effort</div>
+          <div className="absolute top-0 right-4 text-[10px] text-emerald-500 font-mono font-bold uppercase tracking-tighter">High Impact / Low Effort</div>
         </div>
 
         {/* Task Bubbles */}
@@ -691,8 +693,8 @@ function AIActionPlan() {
 
                   {/* Tooltip */}
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-40 p-2 bg-neutral-900 border border-white/10 rounded-lg opacity-0 group-hover/bubble:opacity-100 transition-all pointer-events-none z-20 shadow-2xl">
-                    <p className="text-[10px] text-white font-bold leading-tight">{task.name}</p>
-                    <div className="mt-1 flex justify-between text-[8px] font-mono">
+                    <p className="text-[14px] text-white font-bold leading-tight">{task.name}</p>
+                    <div className="mt-1 flex justify-between text-[12px] font-mono">
                       <span className="text-emerald-400">IMPACT: {task.impact}</span>
                       <span className="text-neutral-500">EFFORT: {task.effort}</span>
                     </div>
@@ -720,19 +722,19 @@ function AIActionPlan() {
               <div className="absolute left-6 top-12 bottom-[-32px] w-px bg-neutral-800" />
             )}
 
-            <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center font-mono text-xs font-bold text-neutral-400 relative z-10">
+            <div className="flex-shrink-0 w-14 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center font-mono text-xs font-bold text-neutral-400 relative z-10">
               D{phase.days}
             </div>
 
             <div className="pt-1">
               <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-3">
                 {phase.title}
-                {i === 0 && <Badge className="bg-emerald-500/10 text-emerald-500 text-[8px] border-none py-0">AUTO-PRIORITIZED</Badge>}
+                {i === 0 && <Badge className="bg-emerald-500/10 text-emerald-500 text-[10px] border-none py-0">AUTO-PRIORITIZED</Badge>}
               </h4>
-              <p className="text-sm text-neutral-400 leading-relaxed mb-4">{phase.desc}</p>
+              <p className="text-md text-neutral-400 leading-relaxed mb-4">{phase.desc}</p>
               <div className="flex flex-wrap gap-2">
                 {phase.items.map((item, j) => (
-                  <span key={j} className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-950 border border-neutral-800 text-neutral-500 font-mono">
+                  <span key={j} className="text-[12px] px-2 py-0.5 rounded-full bg-neutral-950 border border-neutral-800 text-neutral-500 font-mono">
                     {item}
                   </span>
                 ))}
@@ -748,7 +750,7 @@ function AIActionPlan() {
           transition={{ delay: 1.5 }}
           className="pt-6"
         >
-          <Button variant="outline" className="h-12 border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-400 font-bold tracking-tight w-full sm:w-auto">
+          <Button onClick={handleCTA} variant="outline" className="h-12 text-lg cursor-pointer border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-400 font-bold tracking-tight w-full sm:w-auto">
             <Activity className="mr-2 w-4 h-4" /> Download Executive PDF Report
           </Button>
         </motion.div>
@@ -849,7 +851,7 @@ function MainContent() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>
             </span>
-            <span className="text-xl md:text-2xl font-medium tracking-tight text-emerald-400/90 selection:bg-emerald-500/30">
+            <span className="text-sm md:text-xl lg:text-2xl font-medium tracking-tight text-emerald-400/90 selection:bg-emerald-500/30">
               The honest friend who reads your dashboards
             </span>
           </motion.div>
@@ -885,7 +887,7 @@ function MainContent() {
 
           {/*Interactive Mockup Image */}
           <div className="py-12">
-            <Image src="/assets/images/mockup-02.png" alt="Mockup" width={1200} height={800} />
+            <Image src="/assets/images/mockup-03.png" alt="Mockup" width={1200} height={800} />
           </div>
           {/* <InteractiveMockup /> */}
 
@@ -901,9 +903,16 @@ function MainContent() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <Badge variant="outline" className="mb-4 border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
-              Instant Connectivity
-            </Badge>
+
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-auto mb-6 px-6 py-3 w-fit rounded-full border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-xl flex items-center gap-4 group hover:border-emerald-500/40 transition-colors cursor-default"
+            >
+              <span className="text-sm md:text-xl lg:text-xl font-medium tracking-tight text-emerald-400/90 selection:bg-emerald-500/30">
+                Instant Connectivity
+              </span>
+            </motion.div>
             <h2 className="text-3xl lg:text-6xl font-bold tracking-tight mb-6">One-Click Stack Integration</h2>
             <p className="text-neutral-400 max-w-2xl mx-auto text-lg">
               Connects to HubSpot, Google Analytics, Meta Ads, Klaviyo, Salesforce, and 30+ tools via API in under 5 minutes.
@@ -1033,16 +1042,22 @@ function MainContent() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <Badge variant="outline" className="mb-4 border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
-              Intelligence Engine
-            </Badge>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-auto mb-6 px-6 py-3 w-fit rounded-full border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-xl flex items-center gap-4 group hover:border-emerald-500/40 transition-colors cursor-default"
+            >
+              <span className="text-sm md:text-xl lg:text-xl font-medium tracking-tight text-emerald-400/90 selection:bg-emerald-500/30">
+                Intelligence Engine
+              </span>
+            </motion.div>
             <h2 className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">AI-Generated Action Plan</h2>
             <p className="text-neutral-400 max-w-2xl mx-auto text-lg leading-relaxed">
               Produces a prioritized 90-day roadmap with specific recommendations ranked by expected impact and effort.
             </p>
           </motion.div>
 
-          <AIActionPlan />
+          <AIActionPlan handleCTA={handleCTA} />
         </div>
       </section>
 
