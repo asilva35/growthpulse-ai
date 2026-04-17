@@ -19,8 +19,16 @@ import {
   PieChart,
   Layers,
   BarChart4,
-  AlertCircle
+  AlertCircle,
+  Cloud,
+  Database,
+  Check,
+  Target,
+  Pointer,
+  MousePointer2
 } from "lucide-react";
+
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -29,6 +37,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { AuroraBackground } from "@/components/ui/aurora-background";
+import Image from "next/image";
 
 
 function LeadFormDialog({ isOpen, onOpenChange, variant }: { isOpen: boolean, onOpenChange: (open: boolean) => void, variant: "A" | "B" }) {
@@ -306,7 +315,295 @@ function PaidMediaWidget() {
   );
 }
 
+function InteractiveMockup() {
+  // Mock Dashboard Hover States
+  const [isAcquisitionHovered, setIsAcquisitionHovered] = useState(false);
+  const [isSEOHovered, setIsSEOHovered] = useState(false);
+  const [isPaidMediaHovered, setIsPaidMediaHovered] = useState(false);
+  return (
+    <>
+      {/* Interactive UI Mockup */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="mt-20 w-full max-w-5xl rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg p-4 shadow-2xl z-10 relative overflow-hidden transform-gpu"
+      >
+        {/* Live Scanning Effect - Optimized with transform-gpu */}
+        <motion.div
+          className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-emerald-500 to-transparent opacity-30 z-20 pointer-events-none transform-gpu"
+          animate={{ x: ['0%', '1000%'] }}
+          transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+        />
+
+        {/* Window Controls & Connection Pulses */}
+        <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+            <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
+            <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> HubSpot</span>
+            <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Meta Ads</span>
+            <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Google Analytics</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+          {/* Acquisition Widget (2x1 on desktop) */}
+          <div
+            onMouseEnter={() => setIsAcquisitionHovered(true)}
+            onMouseLeave={() => setIsAcquisitionHovered(false)}
+            className="md:col-span-2 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-emerald-500/20 transition-all duration-300"
+          >
+            <div className="flex justify-between items-start mb-6 text-emerald-400 font-mono text-sm uppercase">
+              <span>Acquisition</span>
+              <motion.div animate={{ scale: isAcquisitionHovered ? 1.1 : 1 }}>
+                <Badge variant="outline" className={`border-none font-mono transition-colors duration-300 ${isAcquisitionHovered ? "bg-emerald-400 text-black" : "bg-emerald-500/20 text-emerald-400"}`}>
+                  {isAcquisitionHovered ? "+48% ROI" : "+32% ROI"}
+                </Badge>
+              </motion.div>
+            </div>
+            <div className="flex items-end gap-1 h-12 w-full transition-opacity">
+              {[40, 55, 45, 60, 50, 75, 65, 90, 80, 100].map((h, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ height: 0 }}
+                  animate={{ height: isAcquisitionHovered ? `${Math.min(h + 15, 100)}%` : `${h}%` }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20,
+                    delay: isAcquisitionHovered ? 0 : i * 0.02 + 0.8
+                  }}
+                  className={`flex-1 rounded-t-sm transform-gpu transition-colors duration-300 ${isAcquisitionHovered ? "bg-emerald-400" : "bg-emerald-500"}`}
+                />
+              ))}
+            </div>
+          </div>
+
+
+          {/* SEO Health Widget (1x1) */}
+          <div
+            onMouseEnter={() => setIsSEOHovered(true)}
+            onMouseLeave={() => setIsSEOHovered(false)}
+            className="md:col-span-1 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-blue-500/20 transition-all duration-300"
+          >
+            <div className="text-blue-400 font-mono text-sm uppercase flex items-center gap-2 mb-2">
+              <Globe className="w-4 h-4" /> SEO Health
+            </div>
+            <div className="flex justify-center flex-1 items-center relative">
+              <svg className="w-20 h-20 -rotate-90 transform-gpu" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="transparent" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
+                <motion.circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="transparent"
+                  stroke="currentColor"
+                  strokeWidth="10"
+                  strokeDasharray="283"
+                  initial={{ strokeDashoffset: 283 }}
+                  animate={{ strokeDashoffset: 283 - (283 * (isSEOHovered ? 0.98 : 0.92)) }}
+                  transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                  className="text-blue-500 transform-gpu"
+                />
+              </svg>
+
+              <motion.div
+                animate={{ scale: isSEOHovered ? 1.2 : 1 }}
+                className="absolute inset-0 flex items-center justify-center font-mono font-bold text-xl text-white transition-colors duration-300"
+              >
+                {isSEOHovered ? "98" : "92"}
+              </motion.div>
+            </div>
+          </div>
+
+
+          {/* Paid Media Efficiency Widget (1x1) */}
+          <div
+            onMouseEnter={() => setIsPaidMediaHovered(true)}
+            onMouseLeave={() => setIsPaidMediaHovered(false)}
+            className="md:col-span-1 rounded-lg bg-white/5 border border-amber-500/10 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-amber-500/30 transition-all duration-300"
+          >
+            <div className="text-amber-400 font-mono text-xs uppercase flex items-center gap-2 mb-2">
+              <DollarSign className="w-4 h-4" /> Paid Media
+            </div>
+            <div>
+              <p className="text-[10px] text-neutral-400 font-mono mb-1">Current ROAS</p>
+              <motion.p
+                animate={{ y: isPaidMediaHovered ? -2 : 0, color: isPaidMediaHovered ? "#fbbf24" : "#ffffff" }}
+                className="text-2xl font-bold font-mono text-white mb-3"
+              >
+                {isPaidMediaHovered ? "5.8x" : "4.2x"}
+              </motion.p>
+
+              <div className="h-[1px] w-full bg-white/10 my-2"></div>
+
+              <p className="text-[10px] text-neutral-400 font-mono mb-1">Industry Benchmark</p>
+              <p className="text-sm font-medium font-mono text-neutral-300">2.8x</p>
+            </div>
+          </div>
+
+
+          {/* AI Action Plan Widget (Full Width) */}
+          <div className="md:col-span-4 rounded-lg bg-white/5 border border-white/5 p-5">
+            <div className="text-neutral-300 font-mono text-sm uppercase flex items-center gap-2 mb-4 border-b border-white/10 pb-2">
+              <Zap className="w-4 h-4 text-emerald-400" /> AI Action Plan
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-emerald-500/20 transition-colors">
+                <div>
+                  <p className="text-sm text-white font-medium">Reallocate PMax Spend</p>
+                  <p className="text-xs text-emerald-400 font-mono mt-1 flex items-center gap-1"><ArrowRight className="w-3 h-3" /> +$12k ROI</p>
+                </div>
+                <Badge variant="outline" className="bg-emerald-500/20 text-emerald-400 border-none text-[10px]">High Impact</Badge>
+              </div>
+              <div className="bg-white/5 border border-white/10 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-white/10 transition-colors">
+                <div>
+                  <p className="text-sm text-white font-medium">Fix Cart Abandonment</p>
+                  <p className="text-xs text-blue-400 font-mono mt-1 flex items-center gap-1"><Settings className="w-3 h-3" /> Dev Task</p>
+                </div>
+                <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-none text-[10px]">Med Impact</Badge>
+              </div>
+              <div className="bg-amber-500/5 border border-amber-500/20 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-amber-500/10 transition-colors">
+                <div>
+                  <p className="text-sm text-white font-medium">Update Canonical Tags</p>
+                  <p className="text-xs text-amber-400 font-mono mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Crucial Fix</p>
+                </div>
+                <Badge variant="outline" className="bg-amber-500/20 text-amber-400 border-none text-[10px]">Low Effort</Badge>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </motion.div>
+    </>
+  )
+}
+
+function IntegrationHub() {
+  const [connections, setConnections] = useState<Record<string, 'idle' | 'loading' | 'connected'>>({
+    hubspot: 'idle',
+    ga4: 'idle',
+    meta: 'idle',
+    klaviyo: 'idle',
+    salesforce: 'idle'
+  });
+
+  const tools = [
+    { id: 'hubspot', label: 'HubSpot', color: '#ff7a59', icon: Cloud, angle: -90 },
+    { id: 'ga4', label: 'Google Analytics', color: '#f9ab00', icon: BarChart4, angle: -18 },
+    { id: 'meta', label: 'Meta Ads', color: '#0668E1', icon: Share2, angle: 54 },
+    { id: 'klaviyo', label: 'Klaviyo', color: '#ffffff', icon: Mail, angle: 126 },
+    { id: 'salesforce', label: 'Salesforce', color: '#00a1e0', icon: Database, angle: 198 },
+  ];
+
+
+  const handleConnect = (id: string) => {
+    if (connections[id] !== 'idle') return;
+    setConnections(prev => ({ ...prev, [id]: 'loading' }));
+    setTimeout(() => {
+      setConnections(prev => ({ ...prev, [id]: 'connected' }));
+    }, 2000);
+  };
+
+  return (
+    <div className="IntegrationHub relative w-full max-w-4xl mx-auto h-[600px] flex items-center justify-center">
+      {/* Central Hub */}
+      <div className="relative z-20 w-32 h-32 rounded-full bg-neutral-900 border-2 border-emerald-500/50 flex items-center justify-center shadow-[0_0_50px_-10px_rgba(16,185,129,0.5)]">
+        <div className="absolute inset-0 rounded-full animate-pulse bg-emerald-500/10" />
+        <Activity className="w-12 h-12 text-emerald-400" />
+      </div>
+
+      {/* Orbital Tools */}
+      {tools.map((tool) => {
+        const radius = 240;
+        const x = Math.cos((tool.angle * Math.PI) / 180) * radius;
+        const y = Math.sin((tool.angle * Math.PI) / 180) * radius;
+        const status = connections[tool.id];
+
+        return (
+          <div key={tool.id}>
+            {/* Connection Line */}
+            <svg viewBox="0 0 600 600" className="absolute inset-0 w-full h-full pointer-events-none z-10">
+              <motion.path
+                d={`M 300 300 L ${300 + x} ${300 + y}`}
+                stroke={tool.color}
+                strokeWidth="1"
+                fill="none"
+                opacity="0.2"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                style={{
+                  filter: `drop-shadow(0 0 8px ${tool.color})`
+                }}
+              />
+              {status === 'connected' && (
+                <motion.path
+                  d={`M 300 300 L ${300 + x} ${300 + y}`}
+                  stroke={tool.color}
+                  strokeWidth="2"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: [0, 1], opacity: [0, 1, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+                  style={{
+                    filter: `drop-shadow(0 0 12px ${tool.color})`
+                  }}
+                />
+              )}
+            </svg>
+
+            {/* Tool Card */}
+            <motion.div
+              initial={{ scale: 0, x: 0, y: 0 }}
+              animate={{ scale: 1, x: x - 70, y: y - 70 }}
+              style={{ x: "-150px", y: "-50%" }}
+              className="absolute z-30 left-1/2 top-1/2"
+            >
+              <div className="bg-neutral-900 border border-white/10 rounded-2xl p-4 flex flex-col items-center gap-3 w-32 shadow-2xl backdrop-blur-xl group hover:border-white/20 transition-all">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-1" style={{ backgroundColor: `${tool.color}15` }}>
+                  <tool.icon className="w-6 h-6" style={{ color: tool.color }} />
+                </div>
+                <span className="text-[12px] uppercase font-bold tracking-tighter text-neutral-400 text-center">{tool.label}</span>
+
+                <button
+                  onClick={() => handleConnect(tool.id)}
+                  disabled={status !== 'idle'}
+                  className={`w-full py-1.5 rounded-lg text-[12px] font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${status === 'idle' ? "bg-white/5 hover:bg-white/10 text-white" :
+                    status === 'loading' ? "bg-white/5 text-neutral-500 cursor-wait" :
+                      "bg-emerald-500/10 text-emerald-400"
+                    }`}
+                >
+                  {status === 'idle' && <> <motion.div initial={{ opacity: 0, x: 0, y: 0 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ delay: 1 }}><Pointer className={`w-6 h-6 animate-pulse hover:animate-none absolute right-2 ${tool.id === 'hubspot' ? '' : 'hidden'}`} /></motion.div> Connect <ArrowRight className="w-3 h-3" /></>}
+                  {status === 'loading' && <span className="w-3 h-3 border-2 border-neutral-500 border-t-white rounded-full animate-spin" />}
+                  {status === 'connected' && <><Check className="w-3 h-3" /> Linked</>}
+                </button>
+
+                {status === 'connected' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute -bottom-10 left-0 right-0 py-1 px-2 bg-emerald-500/20 rounded border border-emerald-500/30 text-center"
+                  >
+                    <span className="text-[10px] text-emerald-400 font-mono animate-pulse">READING API...</span>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        );
+      })}
+
+    </div>
+  );
+}
+
 function MainContent() {
+
   const [headlineVariant, setHeadlineVariant] = useState<"A" | "B">("A");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [scrolledPos, setScrolledPos] = useState(0);
@@ -355,10 +652,7 @@ function MainContent() {
     if (scrolledPos === 90) console.log("[Analytics] Scroll Depth: 90%");
   }, [scrolledPos]);
 
-  // Mock Dashboard Hover States
-  const [isAcquisitionHovered, setIsAcquisitionHovered] = useState(false);
-  const [isSEOHovered, setIsSEOHovered] = useState(false);
-  const [isPaidMediaHovered, setIsPaidMediaHovered] = useState(false);
+
 
 
   const handleCTA = () => {
@@ -433,167 +727,46 @@ function MainContent() {
             <p className="text-sm text-neutral-500 sm:hidden">No credit card required.</p>
           </div>
 
-          {/* Interactive UI Mockup */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-20 w-full max-w-5xl rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg p-4 shadow-2xl z-10 relative overflow-hidden transform-gpu"
-          >
-            {/* Live Scanning Effect - Optimized with transform-gpu */}
-            <motion.div
-              className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-emerald-500 to-transparent opacity-30 z-20 pointer-events-none transform-gpu"
-              animate={{ x: ['0%', '1000%'] }}
-              transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
-            />
-
-            {/* Window Controls & Connection Pulses */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
-                <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> HubSpot</span>
-                <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Meta Ads</span>
-                <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Google Analytics</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-
-              {/* Acquisition Widget (2x1 on desktop) */}
-              <div
-                onMouseEnter={() => setIsAcquisitionHovered(true)}
-                onMouseLeave={() => setIsAcquisitionHovered(false)}
-                className="md:col-span-2 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-emerald-500/20 transition-all duration-300"
-              >
-                <div className="flex justify-between items-start mb-6 text-emerald-400 font-mono text-sm uppercase">
-                  <span>Acquisition</span>
-                  <motion.div animate={{ scale: isAcquisitionHovered ? 1.1 : 1 }}>
-                    <Badge variant="outline" className={`border-none font-mono transition-colors duration-300 ${isAcquisitionHovered ? "bg-emerald-400 text-black" : "bg-emerald-500/20 text-emerald-400"}`}>
-                      {isAcquisitionHovered ? "+48% ROI" : "+32% ROI"}
-                    </Badge>
-                  </motion.div>
-                </div>
-                <div className="flex items-end gap-1 h-12 w-full transition-opacity">
-                  {[40, 55, 45, 60, 50, 75, 65, 90, 80, 100].map((h, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ height: 0 }}
-                      animate={{ height: isAcquisitionHovered ? `${Math.min(h + 15, 100)}%` : `${h}%` }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 20,
-                        delay: isAcquisitionHovered ? 0 : i * 0.02 + 0.8
-                      }}
-                      className={`flex-1 rounded-t-sm transform-gpu transition-colors duration-300 ${isAcquisitionHovered ? "bg-emerald-400" : "bg-emerald-500"}`}
-                    />
-                  ))}
-                </div>
-              </div>
-
-
-              {/* SEO Health Widget (1x1) */}
-              <div
-                onMouseEnter={() => setIsSEOHovered(true)}
-                onMouseLeave={() => setIsSEOHovered(false)}
-                className="md:col-span-1 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-blue-500/20 transition-all duration-300"
-              >
-                <div className="text-blue-400 font-mono text-sm uppercase flex items-center gap-2 mb-2">
-                  <Globe className="w-4 h-4" /> SEO Health
-                </div>
-                <div className="flex justify-center flex-1 items-center relative">
-                  <svg className="w-20 h-20 -rotate-90 transform-gpu" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="transparent" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
-                    <motion.circle
-                      cx="50"
-                      cy="50"
-                      r="45"
-                      fill="transparent"
-                      stroke="currentColor"
-                      strokeWidth="10"
-                      strokeDasharray="283"
-                      initial={{ strokeDashoffset: 283 }}
-                      animate={{ strokeDashoffset: 283 - (283 * (isSEOHovered ? 0.98 : 0.92)) }}
-                      transition={{ type: "spring", stiffness: 100, damping: 15 }}
-                      className="text-blue-500 transform-gpu"
-                    />
-                  </svg>
-
-                  <motion.div
-                    animate={{ scale: isSEOHovered ? 1.2 : 1 }}
-                    className="absolute inset-0 flex items-center justify-center font-mono font-bold text-xl text-white transition-colors duration-300"
-                  >
-                    {isSEOHovered ? "98" : "92"}
-                  </motion.div>
-                </div>
-              </div>
-
-
-              {/* Paid Media Efficiency Widget (1x1) */}
-              <div
-                onMouseEnter={() => setIsPaidMediaHovered(true)}
-                onMouseLeave={() => setIsPaidMediaHovered(false)}
-                className="md:col-span-1 rounded-lg bg-white/5 border border-amber-500/10 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-amber-500/30 transition-all duration-300"
-              >
-                <div className="text-amber-400 font-mono text-xs uppercase flex items-center gap-2 mb-2">
-                  <DollarSign className="w-4 h-4" /> Paid Media
-                </div>
-                <div>
-                  <p className="text-[10px] text-neutral-400 font-mono mb-1">Current ROAS</p>
-                  <motion.p
-                    animate={{ y: isPaidMediaHovered ? -2 : 0, color: isPaidMediaHovered ? "#fbbf24" : "#ffffff" }}
-                    className="text-2xl font-bold font-mono text-white mb-3"
-                  >
-                    {isPaidMediaHovered ? "5.8x" : "4.2x"}
-                  </motion.p>
-
-                  <div className="h-[1px] w-full bg-white/10 my-2"></div>
-
-                  <p className="text-[10px] text-neutral-400 font-mono mb-1">Industry Benchmark</p>
-                  <p className="text-sm font-medium font-mono text-neutral-300">2.8x</p>
-                </div>
-              </div>
-
-
-              {/* AI Action Plan Widget (Full Width) */}
-              <div className="md:col-span-4 rounded-lg bg-white/5 border border-white/5 p-5">
-                <div className="text-neutral-300 font-mono text-sm uppercase flex items-center gap-2 mb-4 border-b border-white/10 pb-2">
-                  <Zap className="w-4 h-4 text-emerald-400" /> AI Action Plan
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div className="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-emerald-500/20 transition-colors">
-                    <div>
-                      <p className="text-sm text-white font-medium">Reallocate PMax Spend</p>
-                      <p className="text-xs text-emerald-400 font-mono mt-1 flex items-center gap-1"><ArrowRight className="w-3 h-3" /> +$12k ROI</p>
-                    </div>
-                    <Badge variant="outline" className="bg-emerald-500/20 text-emerald-400 border-none text-[10px]">High Impact</Badge>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-white/10 transition-colors">
-                    <div>
-                      <p className="text-sm text-white font-medium">Fix Cart Abandonment</p>
-                      <p className="text-xs text-blue-400 font-mono mt-1 flex items-center gap-1"><Settings className="w-3 h-3" /> Dev Task</p>
-                    </div>
-                    <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-none text-[10px]">Med Impact</Badge>
-                  </div>
-                  <div className="bg-amber-500/5 border border-amber-500/20 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-amber-500/10 transition-colors">
-                    <div>
-                      <p className="text-sm text-white font-medium">Update Canonical Tags</p>
-                      <p className="text-xs text-amber-400 font-mono mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Crucial Fix</p>
-                    </div>
-                    <Badge variant="outline" className="bg-amber-500/20 text-amber-400 border-none text-[10px]">Low Effort</Badge>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </motion.div>
+          {/*Interactive Mockup Image */}
+          {/* <div className="py-12">
+            <Image src="/assets/images/mockup.png" alt="Mockup" width={1200} height={800} />
+          </div> */}
+          <InteractiveMockup />
 
         </section>
       </AuroraBackground>
+
+      {/* Integration Hub Section */}
+      <section className="py-32 px-6 lg:px-12 bg-neutral-950 border-y border-neutral-900 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <Badge variant="outline" className="mb-4 border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
+              Instant Connectivity
+            </Badge>
+            <h2 className="text-3xl lg:text-6xl font-bold tracking-tight mb-6">One-Click Stack Integration</h2>
+            <p className="text-neutral-400 max-w-2xl mx-auto text-lg">
+              Connects to HubSpot, Google Analytics, Meta Ads, Klaviyo, Salesforce, and 30+ tools via API in under 5 minutes.
+            </p>
+          </motion.div>
+
+          <IntegrationHub />
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-center mt-12"
+          >
+            <p className="text-sm text-neutral-500 flex items-center justify-center gap-2">
+              <Zap className="w-4 h-4 text-emerald-500" /> Enterprise-grade security. OAuth 2.0 & Read-only access.
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Bento Grid Features */}
       <section className="py-32 px-6 lg:px-12 max-w-7xl mx-auto overflow-hidden">
@@ -650,7 +823,7 @@ function MainContent() {
           </DimensionCard>
 
           {/* Retention */}
-          <DimensionCard title="Retention" className="md:col-span-2 lg:col-span-4" delay={0.4}>
+          <DimensionCard title="Retention" className="md:col-span-2 lg:col-span-5" delay={0.4}>
             <div className="flex items-center justify-between">
               <div className="space-y-1">
                 <span className="text-xl font-bold font-mono">68%</span>
@@ -663,17 +836,12 @@ function MainContent() {
           </DimensionCard>
 
           {/* Paid Media */}
-          <DimensionCard title="Paid Media Efficiency" className="md:col-span-2 lg:col-span-5" delay={0.5}>
+          <DimensionCard title="Paid Media Efficiency" className="md:col-span-2 lg:col-span-7" delay={0.5}>
             <PaidMediaWidget />
           </DimensionCard>
 
-          {/* SEO Health */}
-          <DimensionCard title="SEO Health" className="md:col-span-2 lg:col-span-8" delay={0.6}>
-            <SEOHealthWidget />
-          </DimensionCard>
-
           {/* Referral */}
-          <DimensionCard title="Referral" className="md:col-span-2 lg:col-span-4 text-center" delay={0.7}>
+          <DimensionCard title="Referral" className="md:col-span-2 lg:col-span-5 text-center" delay={0.7}>
             <div className="flex flex-col items-center justify-center h-full -mt-2">
               <div className="relative">
                 <Share2 className="w-8 h-8 text-neutral-500 animate-pulse" />
@@ -687,8 +855,18 @@ function MainContent() {
               <p className="text-[10px] text-neutral-500 uppercase tracking-widest mt-1">K-Factor</p>
             </div>
           </DimensionCard>
+
+          {/* SEO Health */}
+          <DimensionCard title="SEO Health" className="md:col-span-2 lg:col-span-12" delay={0.6}>
+            <SEOHealthWidget />
+          </DimensionCard>
+
+
         </div>
       </section>
+
+
+
 
       {/* Social Proof */}
       <section className="py-12 border-y border-neutral-900/50 bg-neutral-950 px-6">
