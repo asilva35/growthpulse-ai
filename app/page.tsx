@@ -22,11 +22,14 @@ import {
   AlertCircle,
   Cloud,
   Database,
-  Check,
   Target,
   Pointer,
-  MousePointer2
+  MousePointer2,
+  FileText,
+  Download,
+  Check
 } from "lucide-react";
+
 
 
 import { Button } from "@/components/ui/button";
@@ -604,7 +607,155 @@ function IntegrationHub() {
   );
 }
 
+function ExecutiveReportPreview({ handleCTA }: { handleCTA: () => void }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Radar chart points (7 dimensions)
+  const dims = 7;
+  const radius = 40;
+  const center = 50;
+  const scores = [85, 70, 95, 60, 80, 75, 90];
+
+  const points = scores.map((score, i) => {
+    const angle = (i * 2 * Math.PI) / dims - Math.PI / 2;
+    const r = (score / 100) * radius;
+    const x = center + r * Math.cos(angle);
+    const y = center + r * Math.sin(angle);
+    return `${x},${y}`;
+  }).join(" ");
+
+  return (
+    <div className="relative w-full max-w-lg mx-auto py-12 px-4 group">
+      {/* 3D PDF Mockup */}
+      <motion.div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        animate={{
+          rotateX: isHovered ? 0 : 10,
+          rotateY: isHovered ? 0 : 25,
+          scale: isHovered ? 1.05 : 1
+        }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className="relative bg-white rounded-sm shadow-2xl p-8 aspect-[1/1.4] overflow-hidden origin-bottom cursor-pointer"
+        style={{ perspective: "1000px" }}
+      >
+        {/* Scanning Beam */}
+        <motion.div
+          animate={{ top: ["0%", "100%", "0%"] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          className="absolute left-0 right-0 h-[2px] bg-emerald-500/30 z-20 pointer-events-none blur-sm"
+        />
+
+        {/* Content */}
+        <div className="space-y-6">
+          <div className="flex justify-between items-start border-b border-neutral-100 pb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-emerald-600 rounded flex items-center justify-center">
+                <Activity className="w-5 h-5 text-white" />
+              </div>
+              <span className="font-bold text-neutral-900 text-[10px] tracking-tight">GROWTH PULSE AI</span>
+            </div>
+            <span className="text-[8px] text-neutral-400 font-mono">REPORT #GP-2026-04</span>
+          </div>
+
+          <div className="space-y-2">
+            <h3 className="text-xl font-serif text-neutral-900 leading-tight">Quarterly Growth Diagnostic: <span className="text-emerald-700">VertexData Inc.</span></h3>
+            <p className="text-[10px] text-neutral-500">Board-Level Strategic Performance Audit — Q2 2026</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <p className="text-[10px] font-bold text-neutral-900 uppercase tracking-wide">Key Findings</p>
+                <p className="text-[9px] text-neutral-600 leading-relaxed">Optimization of the checkout funnel could yield an estimated 14.2% increase in net revenue with minimal developer effort.</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[10px] font-bold text-neutral-900 uppercase tracking-wide">Strategy</p>
+                <p className="text-[9px] text-neutral-600 leading-relaxed">Consolidate underperforming Meta Ad sets (ROAS {"<"} 2.1) and reallocate capital to high-intent Google Search campaigns.</p>
+              </div>
+            </div>
+
+            {/* Mini Spider Chart */}
+            <div className="flex flex-col items-center justify-center border border-neutral-100 rounded p-2 bg-neutral-50/30">
+              <svg viewBox="0 0 100 100" className="w-full aspect-square">
+                {/* Grid */}
+                {[20, 40, 60, 80, 100].map((r) => (
+                  <circle key={r} cx="50" cy="50" r={r * radius / 100} fill="none" stroke="#e5e7eb" strokeWidth="0.5" />
+                ))}
+                <motion.polygon
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  points={points}
+                  fill="rgba(16, 185, 129, 0.2)"
+                  stroke="#10b981"
+                  strokeWidth="1"
+                />
+              </svg>
+              <p className="text-[8px] font-mono text-neutral-400 mt-1 uppercase">Dimensional Growth Score</p>
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-neutral-50 border-dashed">
+            <p className="text-[9px] font-bold text-neutral-900 mb-2">Strategic Recommendations</p>
+            <div className="space-y-1.5">
+              {[
+                "Deploy Multi-touch Attribution (MTA) by Week 4",
+                "Automate abandoned cart recovery loop via Klaviyo",
+                "Initiate A/B test on pricing tier landing pages"
+              ].map((rec, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-emerald-500" />
+                  <p className="text-[8px] text-neutral-600 italic">{rec}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="absolute bottom-8 left-8 right-8 flex justify-between items-center border-t border-neutral-100 pt-4">
+          <p className="text-[7px] text-neutral-400 font-mono tracking-widest uppercase">GrowthPulse Confidential Board Review</p>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded-full border border-neutral-200" />
+            <div className="w-4 h-4 rounded-full bg-neutral-100" />
+          </div>
+        </div>
+
+        {/* Hover Overlay */}
+        <AnimatePresence>
+          {isHovered && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-neutral-950/40 backdrop-blur-[2px] z-30 flex items-center justify-center p-6"
+            >
+              <Button onClick={handleCTA} className="bg-emerald-600 cursor-pointer text-white hover:bg-emerald-500 hover:text-gray-900 font-bold shadow-xl flex items-center gap-2">
+                <Download className="w-4 h-4" /> Download Sample PDF
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Generating Progress Bar (Decorative) */}
+      <div className="mt-8 bg-neutral-900/40 border border-white/5 backdrop-blur-md rounded-full p-1.5 w-full flex items-center gap-3">
+        <div className="flex-1 bg-neutral-800 rounded-full h-1.5 overflow-hidden">
+          <motion.div
+            initial={{ width: "0%" }}
+            whileInView={{ width: "100%" }}
+            transition={{ duration: 3, repeat: Infinity, repeatDelay: 1 }}
+            className="h-full bg-emerald-500"
+          />
+        </div>
+        <span className="text-[10px] text-emerald-400 font-mono animate-pulse uppercase tracking-wider pr-2">Board report ready</span>
+      </div>
+    </div>
+  );
+}
+
 function AIActionPlan({ handleCTA }: { handleCTA: () => void }) {
+
 
   const tasks = [
     { name: "Fix Checkout Latency", impact: 4.4, effort: 2.1, quadrant: "quick-win", color: "#10b981" },
@@ -1060,6 +1211,63 @@ function MainContent() {
           <AIActionPlan handleCTA={handleCTA} />
         </div>
       </section>
+
+      {/* Executive Summary Report Section */}
+      <section className="py-32 px-6 lg:px-12 bg-neutral-950 border-b border-neutral-900 overflow-hidden">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8 order-2 lg:order-1 text-center lg:text-left"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-auto lg:mx-0 px-6 py-3 w-fit rounded-full border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-xl flex items-center gap-4 group hover:border-emerald-500/40 transition-colors cursor-default"
+            >
+              <span className="text-sm md:text-xl lg:text-xl font-medium tracking-tight text-emerald-400/90 selection:bg-emerald-500/30">
+                Board-Ready Ready Output
+              </span>
+            </motion.div>
+
+            <h2 className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Executive Summary Report</h2>
+            <p className="text-neutral-400 max-w-xl text-lg leading-relaxed">
+              Auto-generates a board-ready PDF with key findings, visualized scores, and strategic recommendations in seconds.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+              <Button onClick={handleCTA} className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 px-8 cursor-pointer">
+                View Sample Report
+              </Button>
+              <p className="text-xs text-neutral-500 font-mono">Generated in under 3.2 seconds</p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/5">
+              {[
+                { label: "Dimensions", value: "7+" },
+                { label: "Accuracy", value: "99.9%" },
+                { label: "Export", value: "PDF" }
+              ].map((stat, i) => (
+                <div key={i}>
+                  <p className="text-2xl font-bold text-white mb-1">{stat.value}</p>
+                  <p className="text-[10px] text-neutral-500 uppercase tracking-widest">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, x: 30 }}
+            whileInView={{ opacity: 1, scale: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="order-1 lg:order-2"
+          >
+            <ExecutiveReportPreview handleCTA={handleCTA} />
+          </motion.div>
+        </div>
+      </section>
+
 
       {/* Social Proof */}
       <section className="py-12 border-y border-neutral-900/50 bg-neutral-950 px-6">
