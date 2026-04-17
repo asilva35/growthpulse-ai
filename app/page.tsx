@@ -17,12 +17,15 @@ import {
   Zap,
   Globe,
   PieChart,
-  Layers
+  Layers,
+  BarChart4,
+  AlertCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { AuroraBackground } from "@/components/ui/aurora-background";
@@ -424,41 +427,111 @@ function MainContent() {
             <p className="text-sm text-neutral-500 sm:hidden">No credit card required.</p>
           </div>
 
-          {/* Abstract UI Mockup */}
+          {/* Interactive UI Mockup */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-20 w-full max-w-5xl rounded-xl border border-neutral-800 bg-neutral-900/50 backdrop-blur-xl p-4 shadow-2xl z-10"
+            className="mt-20 w-full max-w-5xl rounded-xl border border-white/10 bg-white/5 backdrop-blur-2xl p-4 shadow-2xl z-10 relative overflow-hidden"
           >
-            <div className="flex items-center gap-2 border-b border-neutral-800 pb-4 mb-4">
-              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-              <div className="ml-4 h-6 w-64 bg-neutral-800 rounded-md"></div>
+            {/* Live Scanning Effect */}
+            <motion.div 
+              className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-emerald-500 to-transparent opacity-50 z-20 pointer-events-none"
+              animate={{ x: ['0%', '1000%'] }}
+              transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
+            />
+            {/* Window Controls & Connection Pulses */}
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> HubSpot</span>
+                <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Meta Ads</span>
+                <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-mono font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Google Analytics</span>
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="h-32 rounded-lg bg-neutral-800/50 border border-neutral-800 flex items-center justify-center relative overflow-hidden">
-                <LineChart className="w-8 h-8 text-emerald-500/20 absolute -bottom-2 -right-2 w-24 h-24" />
-                <div className="text-left w-full p-6">
-                  <p className="text-neutral-500 text-sm">Growth Score</p>
-                  <p className="text-4xl font-semibold text-emerald-400 mt-1">84<span className="text-lg text-neutral-600">/100</span></p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              
+              {/* Acquisition Widget (2x1 on desktop) */}
+              <div className="md:col-span-2 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-emerald-500/20 transition-colors">
+                <div className="flex justify-between items-start mb-6 text-emerald-400 font-mono text-sm uppercase">
+                  <span>Acquisition</span>
+                  <Badge variant="outline" className="bg-emerald-500/20 text-emerald-400 border-none font-mono">+32% ROI</Badge>
+                </div>
+                <div className="flex items-end gap-1 h-12 w-full opacity-70 group-hover:opacity-100 transition-opacity">
+                   {[40, 55, 45, 60, 50, 75, 65, 90, 80, 100].map((h, i) => (
+                    <motion.div key={i} initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: i * 0.05 + 1.2 }} className="flex-1 bg-emerald-500 rounded-t-sm" />
+                   ))}
                 </div>
               </div>
-              <div className="h-32 rounded-lg bg-neutral-800/50 border border-neutral-800 p-6 flex flex-col justify-between">
-                <p className="text-neutral-500 text-sm">Wasted Ad Spend (30d)</p>
-                <p className="text-3xl font-semibold text-red-400">-$12,450</p>
+
+              {/* SEO Health Widget (1x1) */}
+              <div className="md:col-span-1 rounded-lg bg-white/5 border border-white/5 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-blue-500/20 transition-colors">
+                 <div className="text-blue-400 font-mono text-sm uppercase flex items-center gap-2 mb-2">
+                   <Globe className="w-4 h-4" /> SEO Health
+                 </div>
+                 <div className="flex justify-center flex-1 items-center relative">
+                   <svg className="w-20 h-20 -rotate-90" viewBox="0 0 100 100">
+                     <circle cx="50" cy="50" r="45" fill="transparent" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
+                     <motion.circle cx="50" cy="50" r="45" fill="transparent" stroke="currentColor" strokeWidth="10" strokeDasharray="283" initial={{ strokeDashoffset: 283 }} animate={{ strokeDashoffset: 283 - (283 * 0.92) }} transition={{ duration: 1.5, delay: 1 }} className="text-blue-500" />
+                   </svg>
+                   <div className="absolute inset-0 flex items-center justify-center font-mono font-bold text-xl text-white">92</div>
+                 </div>
               </div>
-              <div className="h-32 rounded-lg bg-neutral-800/50 border border-neutral-800 p-6 flex flex-col justify-between">
-                <p className="text-neutral-500 text-sm">High-Impact Actions</p>
-                <div className="flex -space-x-2">
-                  <div className="w-10 h-10 rounded-full border-2 border-neutral-900 bg-emerald-500/20 flex items-center justify-center"><Zap className="w-4 h-4 text-emerald-500" /></div>
-                  <div className="w-10 h-10 rounded-full border-2 border-neutral-900 bg-blue-500/20 flex items-center justify-center"><Activity className="w-4 h-4 text-blue-500" /></div>
-                  <div className="w-10 h-10 rounded-full border-2 border-neutral-900 bg-purple-500/20 flex items-center justify-center"><Settings className="w-4 h-4 text-purple-500" /></div>
+
+               {/* Paid Media Efficiency Widget (1x1) */}
+              <div className="md:col-span-1 rounded-lg bg-white/5 border border-amber-500/10 p-5 relative overflow-hidden flex flex-col justify-between group hover:border-amber-500/30 transition-colors">
+                <div className="text-amber-400 font-mono text-xs uppercase flex items-center gap-2 mb-2">
+                  <DollarSign className="w-4 h-4" /> Paid Media
+                </div>
+                <div>
+                  <p className="text-[10px] text-neutral-400 font-mono mb-1">Current ROAS</p>
+                  <p className="text-2xl font-bold font-mono text-white mb-3">4.2x</p>
+                  
+                  <div className="h-[1px] w-full bg-white/10 my-2"></div>
+                  
+                  <p className="text-[10px] text-neutral-400 font-mono mb-1">Industry Benchmark</p>
+                  <p className="text-sm font-medium font-mono text-neutral-300">2.8x</p>
                 </div>
               </div>
+
+              {/* AI Action Plan Widget (Full Width) */}
+              <div className="md:col-span-4 rounded-lg bg-white/5 border border-white/5 p-5">
+                <div className="text-neutral-300 font-mono text-sm uppercase flex items-center gap-2 mb-4 border-b border-white/10 pb-2">
+                  <Zap className="w-4 h-4 text-emerald-400" /> AI Action Plan
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-emerald-500/20 transition-colors">
+                    <div>
+                      <p className="text-sm text-white font-medium">Reallocate PMax Spend</p>
+                      <p className="text-xs text-emerald-400 font-mono mt-1 flex items-center gap-1"><ArrowRight className="w-3 h-3"/> +$12k ROI</p>
+                    </div>
+                    <Badge variant="outline" className="bg-emerald-500/20 text-emerald-400 border-none text-[10px]">High Impact</Badge>
+                  </div>
+                  <div className="bg-white/5 border border-white/10 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-white/10 transition-colors">
+                    <div>
+                      <p className="text-sm text-white font-medium">Fix Cart Abandonment</p>
+                      <p className="text-xs text-blue-400 font-mono mt-1 flex items-center gap-1"><Settings className="w-3 h-3"/> Dev Task</p>
+                    </div>
+                    <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-none text-[10px]">Med Impact</Badge>
+                  </div>
+                  <div className="bg-amber-500/5 border border-amber-500/20 p-3 rounded-md flex justify-between items-center group cursor-pointer hover:bg-amber-500/10 transition-colors">
+                    <div>
+                      <p className="text-sm text-white font-medium">Update Canonical Tags</p>
+                      <p className="text-xs text-amber-400 font-mono mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> Crucial Fix</p>
+                    </div>
+                    <Badge variant="outline" className="bg-amber-500/20 text-amber-400 border-none text-[10px]">Low Effort</Badge>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </motion.div>
+
         </section>
       </AuroraBackground>
 
