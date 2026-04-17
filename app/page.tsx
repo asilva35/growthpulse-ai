@@ -337,8 +337,8 @@ function InteractiveMockup() {
         {/* Live Scanning Effect - Optimized with transform-gpu */}
         <motion.div
           className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-emerald-500 to-transparent opacity-30 z-20 pointer-events-none transform-gpu"
-          animate={{ x: ['0%', '1000%'] }}
-          transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+          animate={{ x: ['0%', '1000px'] }}
+          transition={{ repeat: Infinity, repeatDelay: 2, duration: 2, ease: "easeInOut" }}
         />
 
         {/* Window Controls & Connection Pulses */}
@@ -1038,7 +1038,7 @@ function MainContent() {
 
           {/*Interactive Mockup Image */}
           <div className="py-12">
-            <Image src="/assets/images/mockup-03.png" alt="Mockup" width={1200} height={800} />
+            <Image src="/assets/images/mockup-04.png" alt="Mockup" width={1200} height={800} />
           </div>
           {/* <InteractiveMockup /> */}
 
@@ -1268,7 +1268,36 @@ function MainContent() {
         </div>
       </section>
 
+      {/* Live Dashboard Section */}
+      <section className="py-32 px-6 lg:px-12 bg-neutral-900/10 border-b border-neutral-900 overflow-hidden relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[160px] rounded-full pointer-events-none" />
 
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-auto mb-6 px-6 py-3 w-fit rounded-full border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-xl flex items-center gap-4 group hover:border-emerald-500/40 transition-colors cursor-default"
+            >
+              <span className="text-sm md:text-xl lg:text-xl font-medium tracking-tight text-emerald-400/90 selection:bg-emerald-500/30">
+                Live Monitoring
+              </span>
+            </motion.div>
+            <h2 className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Live Dashboard</h2>
+            <p className="text-neutral-400 max-w-2xl mx-auto text-lg leading-relaxed">
+              Real-time monitoring of all 7 dimensions with alerts when performance dips below benchmarks
+            </p>
+          </motion.div>
+          <div className="flex justify-center">
+            <InteractiveMockup />
+          </div>
+        </div>
+      </section>
       {/* Social Proof */}
       <section className="py-12 border-y border-neutral-900/50 bg-neutral-950 px-6">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -1291,7 +1320,7 @@ function MainContent() {
           <div className="h-px w-full lg:w-px lg:h-16 bg-neutral-800"></div>
 
           <div className="flex-1">
-            <p className="text-lg text-neutral-300 italic mb-4">&quot;Growth Pulse found $140K in wasted ad spend we didn&apos;t know about. It paid for itself in hours.&quot;</p>
+            <p className="text-lg lg:text-2xl text-neutral-300 italic mb-4">&quot;Growth Pulse found $140K in wasted ad spend we didn&apos;t know about. It paid for itself in hours.&quot;</p>
             <p className="text-sm text-neutral-500 font-bold tracking-wide uppercase">VP Marketing, FictionalTech</p>
           </div>
 
@@ -1329,6 +1358,7 @@ function MainContent() {
               <ul className="space-y-4">
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> 5 Integrations</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Monthly reports</li>
+                <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Quarterly Action Plans</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> 2 seats</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Email support</li>
               </ul>
@@ -1340,7 +1370,7 @@ function MainContent() {
 
           {/* Growth */}
           <Card className="bg-neutral-900 border-2 border-emerald-500/50 max-h-fit relative transform md:-translate-y-4 text-white">
-            <div className="absolute top-0 inset-x-0 transform -translate-y-1/2 flex justify-center">
+            <div className="absolute top-4 inset-x-0 transform -translate-y-1/2 flex justify-center">
               <span className="bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full">Most Popular</span>
             </div>
             <CardHeader>
@@ -1354,6 +1384,7 @@ function MainContent() {
               <ul className="space-y-4">
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> 15 Integrations</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Weekly reports</li>
+                <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Monthly Action Plans</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> 5 seats</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Priority support</li>
               </ul>
@@ -1376,6 +1407,7 @@ function MainContent() {
               <ul className="space-y-4">
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Unlimited integrations</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Daily reports + alerts</li>
+                <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Monthly Action Plans + live dashboard</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Unlimited seats</li>
                 <li className="flex items-center gap-3 text-neutral-300 text-sm"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Dedicated manager</li>
               </ul>
