@@ -27,8 +27,13 @@ import {
   MousePointer2,
   FileText,
   Download,
-  Check
+  Check,
+  MessageSquare,
+  Menu,
+  X
 } from "lucide-react";
+
+
 
 
 
@@ -916,6 +921,16 @@ function MainContent() {
   const [headlineVariant, setHeadlineVariant] = useState<"A" | "B">("A");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [scrolledPos, setScrolledPos] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const navLinks = [
+    { name: "One-Click", href: "#integrations" },
+    { name: "7 Dimension", href: "#dimensions" },
+    { name: "AI Plan", href: "#plan" },
+    { name: "Report", href: "#report" },
+    { name: "Price", href: "#pricing" },
+    { name: "Contact", href: "#contact" }
+  ];
 
   // A/B Test Logic with Persistence
   useEffect(() => {
@@ -973,18 +988,69 @@ function MainContent() {
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-50 selection:bg-emerald-500/30 font-sans overflow-x-hidden">
       {/* Navbar overlay */}
-      <nav className="fixed top-0 inset-x-0 h-16 border-b border-white/5 bg-neutral-950/50 backdrop-blur-md z-50 flex items-center justify-between px-6 lg:px-12">
-        <div className="flex items-center gap-2 font-bold text-lg tracking-tight">
-          <Activity className="w-5 h-5 text-emerald-500" />
-          <span>GrowthPulse AI</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button size="lg" className="bg-transparent border-solid border-2 border-emerald-600 text-emerald-600 hover:text-black hover:bg-white hover:border-white cursor-pointer font-semibold" onClick={handleCTA}>
-            Get a Diagnostic
-          </Button>
+      <nav className="fixed top-0 inset-x-0 h-20 border-b border-white/5 bg-neutral-950/80 backdrop-blur-xl z-50 flex items-center justify-between px-6 lg:px-12 transition-all">
+        <div className="flex items-center gap-2 font-bold text-xl tracking-tight text-white group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)] group-hover:scale-110 transition-transform">
+            <Activity className="w-6 h-6 text-white" />
+          </div>
+          <span>GrowthPulse<span className="text-emerald-500">AI</span></span>
         </div>
 
+        {/* Desktop Links */}
+        <div className="hidden lg:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <a 
+              key={link.name} 
+              href={link.href} 
+              className="text-sm font-medium text-neutral-400 hover:text-emerald-400 transition-colors uppercase tracking-widest text-[10px]"
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-6">
+          <Button size="lg" className="hidden sm:flex bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 shadow-[0_0_30px_rgba(16,185,129,0.2)] transition-all hover:scale-105" onClick={handleCTA}>
+            Get a Diagnostic
+          </Button>
+          
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="lg:hidden p-2 text-neutral-400 hover:text-white transition-colors"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-full left-0 right-0 bg-neutral-950 border-b border-white/10 p-6 flex flex-col gap-4 lg:hidden backdrop-blur-2xl"
+            >
+              {navLinks.map((link) => (
+                <a 
+                  key={link.name} 
+                  href={link.href} 
+                  className="text-lg font-bold text-neutral-200 hover:text-emerald-400"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
+              ))}
+              <Button size="lg" className="w-full bg-emerald-600 font-bold mt-4" onClick={() => { setIsMobileMenuOpen(false); handleCTA(); }}>
+                Get a Diagnostic
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </nav>
+
 
       {/* Hero Section */}
       <AuroraBackground>
@@ -1046,7 +1112,8 @@ function MainContent() {
       </AuroraBackground>
 
       {/* Integration Hub Section */}
-      <section className="py-32 px-6 lg:px-12 bg-neutral-950 border-y border-neutral-900 overflow-hidden">
+      <section id="integrations" className="py-32 px-6 lg:px-12 bg-neutral-950 border-y border-neutral-900 overflow-hidden">
+
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1085,7 +1152,8 @@ function MainContent() {
       </section>
 
       {/* Bento Grid Features */}
-      <section className="py-32 px-6 lg:px-12 max-w-7xl mx-auto overflow-hidden">
+      <section id="dimensions" className="py-32 px-6 lg:px-12 max-w-7xl mx-auto overflow-hidden">
+
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -1182,7 +1250,8 @@ function MainContent() {
       </section>
 
       {/* AI Action Plan Section */}
-      <section className="py-32 px-6 lg:px-12 bg-neutral-950/50 border-y border-neutral-900 relative overflow-hidden">
+      <section id="plan" className="py-32 px-6 lg:px-12 bg-neutral-950/50 border-y border-neutral-900 relative overflow-hidden">
+
         {/* Background Details */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none mt-[-100px]" />
 
@@ -1213,7 +1282,8 @@ function MainContent() {
       </section>
 
       {/* Executive Summary Report Section */}
-      <section className="py-32 px-6 lg:px-12 bg-neutral-950 border-b border-neutral-900 overflow-hidden">
+      <section id="report" className="py-32 px-6 lg:px-12 bg-neutral-950 border-b border-neutral-900 overflow-hidden">
+
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -1338,7 +1408,8 @@ function MainContent() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-32 px-6 lg:px-12 max-w-7xl mx-auto bg-neutral-950 border-t border-neutral-900">
+      <section id="pricing" className="py-32 px-6 lg:px-12 max-w-7xl mx-auto bg-neutral-950 border-t border-neutral-900">
+
         <div className="text-center mb-20">
           <h2 className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Transparent, scaling pricing</h2>
           <p className="text-neutral-400 text-lg">No hidden fees. Upgrade when your ROI justifies it.</p>
@@ -1418,6 +1489,68 @@ function MainContent() {
           </Card>
         </div>
       </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-32 px-6 lg:px-12 bg-neutral-900/10 border-t border-neutral-900 overflow-hidden relative">
+
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[160px] rounded-full pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
+          <div className="space-y-8">
+            <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10">Contact Support</Badge>
+            <h2 className="text-3xl lg:text-5xl font-bold tracking-tight text-white leading-tight">Level up your growth engineering</h2>
+            <p className="text-neutral-400 text-lg leading-relaxed">
+              Whether you need a custom integration or strategic growth advice, our engineers are here to help you scale.
+            </p>
+            
+            <div className="space-y-4">
+              <div className="flex items-center gap-4 text-neutral-300 group cursor-default">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                  <Mail className="w-5 h-5 text-emerald-400" />
+                </div>
+                <span className="font-mono text-sm">support@growthpulse.ai</span>
+              </div>
+              <div className="flex items-center gap-4 text-neutral-300 group cursor-default">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                  <MessageSquare className="w-5 h-5 text-emerald-400" />
+                </div>
+                <span className="text-sm">Live chat available 24/7 for Growth/Scale plans</span>
+              </div>
+            </div>
+          </div>
+
+          <Card className="bg-neutral-950/50 border border-neutral-800 p-8 shadow-2xl backdrop-blur-xl">
+            <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); handleCTA(); }}>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="first-name" className="text-neutral-400 text-xs uppercase tracking-widest font-bold">First Name</Label>
+                  <Input id="first-name" placeholder="John" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="last-name" className="text-neutral-400 text-xs uppercase tracking-widest font-bold">Last Name</Label>
+                  <Input id="last-name" placeholder="Doe" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contact-email" className="text-neutral-400 text-xs uppercase tracking-widest font-bold">Work Email</Label>
+                <Input id="contact-email" type="email" placeholder="john@company.com" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="message" className="text-neutral-400 text-xs uppercase tracking-widest font-bold">How can we help?</Label>
+                <textarea 
+                  id="message" 
+                  className="w-full min-h-[120px] rounded-md border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500 text-white transition-all" 
+                  placeholder="Tell us about your growth goals..."
+                />
+              </div>
+              <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 transition-all hover:scale-[1.02]">
+                Send message
+              </Button>
+            </form>
+          </Card>
+        </div>
+      </section>
+
 
       <footer className="py-12 border-t border-neutral-900 bg-neutral-950 text-center flex flex-col items-center">
         <div className="flex items-center gap-2 font-bold mb-6 text-neutral-600">
