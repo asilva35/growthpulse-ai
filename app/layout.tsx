@@ -23,6 +23,14 @@ export const metadata: Metadata = {
     siteName: "GrowthPulse AI",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/assets/images/mockup-06.png",
+        width: 1400,
+        height: 636,
+        alt: "GrowthPulse AI",
+      },
+    ],
   },
 };
 

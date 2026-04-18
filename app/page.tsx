@@ -172,6 +172,7 @@ function LeadFormDialog({ isOpen, onOpenChange, variant }: { isOpen: boolean, on
         <AnimatePresence mode="wait">
           {!isSuccess ? (
             <motion.form
+              id="free-diagnostic-form"
               key="form"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1224,7 +1225,7 @@ function MainContent() {
 
         {/*Interactive Mockup Image */}
         <div className="py-12">
-          <Image src="/assets/images/mockup-05.png" alt="Mockup" width={1200} height={800} />
+          <Image src="/assets/images/mockup-06.png" alt="GrowthPulse AI Mockup" width={1400} height={636} />
         </div>
         {/* <InteractiveMockup /> */}
 
@@ -1639,7 +1640,7 @@ function MainContent() {
           </div>
 
           <Card className="bg-neutral-950/50 border border-neutral-800 p-8 shadow-2xl backdrop-blur-xl">
-            <form className="space-y-5" onSubmit={handleContactSubmit}>
+            <form id="contact-form" className="space-y-5" onSubmit={handleContactSubmit}>
               {contactError && (
                 <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 text-sm rounded-lg flex items-center gap-2">
                   <AlertCircle className="w-4 h-4" />
