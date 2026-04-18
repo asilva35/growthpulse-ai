@@ -1086,7 +1086,7 @@ function MainContent() {
         </div>
 
         <div className="flex items-center gap-6">
-          <Button size="lg" className="hidden sm:flex bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 shadow-[0_0_30px_rgba(16,185,129,0.2)] transition-all hover:scale-105" onClick={handleCTA}>
+          <Button id="btn-nav-cta-free-diagnostic" size="lg" className="hidden sm:flex bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 shadow-[0_0_30px_rgba(16,185,129,0.2)] transition-all hover:scale-105" onClick={handleCTA}>
             Get a Diagnostic
           </Button>
 
@@ -1171,7 +1171,7 @@ function MainContent() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 z-10">
-            <Button onClick={handleCTA} size="lg" className="h-14 px-8 text-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] transition-all hover:scale-105">
+            <Button id="btn-hero-cta-free-diagnostic" onClick={handleCTA} size="lg" className="h-14 px-8 text-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] transition-all hover:scale-105">
               Get Your Free Diagnostic
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
