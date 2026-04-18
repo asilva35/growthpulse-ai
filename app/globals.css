@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
@@ -49,6 +49,8 @@
 
   --animate-aurora: aurora 60s linear infinite;
 
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
+
   @keyframes aurora {
     from {
       background-position:
@@ -60,6 +62,18 @@
       background-position:
         350% 50%,
         350% 50%;
+    }
+  }
+
+  @keyframes spotlight {
+    0% {
+      opacity: 0;
+      transform: translate(-72%, -62%) scale(0.5);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -40%) scale(1);
     }
   }
 }
@@ -145,4 +159,16 @@
   html {
     @apply font-sans;
   }
+}
+
+@utility background-gradient {
+  background-color: hsla(197, 86%, 21%, 1);
+  background-image:
+    radial-gradient(at 39% 66%, hsla(231, 10%, 20%, 1) 0px, transparent 50%),
+    radial-gradient(at 18% 60%, hsla(266, 2%, 12%, 1) 0px, transparent 50%),
+    radial-gradient(at 22% 94%, hsla(120, 6%, 16%, 1) 0px, transparent 50%),
+    radial-gradient(at 30% 1%, hsla(305, 9%, 12%, 1) 0px, transparent 50%),
+    radial-gradient(at 50% 51%, hsla(125, 75%, 5%, 1) 0px, transparent 50%),
+    radial-gradient(at 78% 52%, hsla(262, 78%, 4%, 1) 0px, transparent 50%),
+    radial-gradient(at 54% 87%, hsla(89, 74%, 8%, 1) 0px, transparent 50%);
 }

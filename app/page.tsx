@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useMotionTemplate, animate } from "framer-motion";
 import {
   Settings,
   Mail,
@@ -47,6 +47,50 @@ import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import Image from "next/image";
 import { submitFreeDiagnostic, submitContactForm } from "./actions";
+
+const STATIC_COLOR = "#13FFAA"; // Example static color
+
+function AuroraGradient({ children, className }: { children: React.ReactNode, className?: string }) {
+  const backgroundImage = `radial-gradient(125% 125% at 50% 0%, #020617 50%, ${STATIC_COLOR})`;
+
+  return (
+    <section
+      style={{ backgroundImage }}
+      className={className}
+    >
+      {children}
+    </section>
+  );
+}
+
+const COLORS_TOP = ["#13FFAA", "#1E67C6", "#f9ab00", "#1a1718ff"];
+
+function AuroraGradientAnimated({ children, className }: { children: React.ReactNode, className?: string }) {
+  // Initialize motion value with the first color
+  const color = useMotionValue(COLORS_TOP[0]);
+
+  useEffect(() => {
+    // Animate the color changes in a loop
+    animate(color, COLORS_TOP, {
+      ease: "easeInOut",  // Easing function for smooth transitions
+      duration: 10,       // Duration for the entire color transition cycle
+      repeat: Infinity,   // Repeat the animation infinitely
+      repeatType: "mirror", // Reverses the animation direction on each cycle
+    });
+  }, [color]);
+
+  // Use motion template to create a dynamic background gradient
+  const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
+
+  return (
+    <motion.section
+      style={{ backgroundImage }}
+      className={className}
+    >
+      {children}
+    </motion.section>
+  );
+}
 
 
 
@@ -1129,63 +1173,62 @@ function MainContent() {
 
 
       {/* Hero Section */}
-      <AuroraBackground>
-        <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 lg:px-12 flex flex-col items-center text-center overflow-hidden">
-          {/* Abstract Background Viz */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
-          <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b from-emerald-500/10 to-transparent pointer-events-none blur-3xl opacity-50" />
 
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
+      <AuroraGradientAnimated className="relative min-h-screen pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 lg:px-12 flex flex-col items-center text-center overflow-hidden">
+        {/* Abstract Background Viz */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b from-emerald-500/10 to-transparent pointer-events-none blur-3xl opacity-50" />
+
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-10 px-8 py-4 rounded-full border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-xl flex items-center gap-4 group hover:border-emerald-500/40 transition-colors cursor-default"
+        >
+          <span className="relative flex h-4 w-4">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>
+          </span>
+          <span className="text-sm md:text-xl lg:text-2xl font-medium tracking-tight text-emerald-400/90 selection:bg-emerald-500/30">
+            The honest friend who reads your dashboards
+          </span>
+        </motion.div>
+
+
+        <AnimatePresence mode="wait">
+          <motion.h1
+            key={headlineVariant}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-10 px-8 py-4 rounded-full border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-xl flex items-center gap-4 group hover:border-emerald-500/40 transition-colors cursor-default"
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="text-5xl text-white lg:text-7xl font-bold tracking-tighter max-w-4xl leading-[1.1] mb-6 z-10"
           >
-            <span className="relative flex h-4 w-4">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>
-            </span>
-            <span className="text-sm md:text-xl lg:text-2xl font-medium tracking-tight text-emerald-400/90 selection:bg-emerald-500/30">
-              The honest friend who reads your dashboards
-            </span>
-          </motion.div>
+            {headlineVariant === "A"
+              ? "Your marketing stack, diagnosed in minutes"
+              : "Stop wasting ad spend. Get your Growth Score now."}
 
+          </motion.h1>
+        </AnimatePresence>
 
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={headlineVariant}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="text-5xl text-white lg:text-7xl font-bold tracking-tighter max-w-4xl leading-[1.1] mb-6 z-10"
-            >
-              {headlineVariant === "A"
-                ? "Your marketing stack, diagnosed in minutes"
-                : "Stop wasting ad spend. Get your Growth Score now."}
+        <p className="text-lg lg:text-xl text-gray-400 max-w-2xl mb-10 z-10 font-light">
+          Connect your marketing tools in one click. Our AI uncovers hidden performance gaps and gives you a step-by-step roadmap to scale efficiently.
+        </p>
 
-            </motion.h1>
-          </AnimatePresence>
+        <div className="flex flex-col sm:flex-row items-center gap-4 z-10">
+          <Button id="btn-hero-cta-free-diagnostic" onClick={handleCTA} size="lg" className="h-14 px-8 text-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] transition-all hover:scale-105">
+            Get Your Free Diagnostic
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
+          <p className="text-sm text-neutral-500 sm:hidden">No credit card required.</p>
+        </div>
 
-          <p className="text-lg lg:text-xl text-gray-400 max-w-2xl mb-10 z-10 font-light">
-            Connect your marketing tools in one click. Our AI uncovers hidden performance gaps and gives you a step-by-step roadmap to scale efficiently.
-          </p>
+        {/*Interactive Mockup Image */}
+        <div className="py-12">
+          <Image src="/assets/images/mockup-05.png" alt="Mockup" width={1200} height={800} />
+        </div>
+        {/* <InteractiveMockup /> */}
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 z-10">
-            <Button id="btn-hero-cta-free-diagnostic" onClick={handleCTA} size="lg" className="h-14 px-8 text-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] transition-all hover:scale-105">
-              Get Your Free Diagnostic
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <p className="text-sm text-neutral-500 sm:hidden">No credit card required.</p>
-          </div>
-
-          {/*Interactive Mockup Image */}
-          <div className="py-12">
-            <Image src="/assets/images/mockup-04.png" alt="Mockup" width={1200} height={800} />
-          </div>
-          {/* <InteractiveMockup /> */}
-
-        </section>
-      </AuroraBackground>
+      </AuroraGradientAnimated>
 
       {/* Integration Hub Section */}
       <section id="integrations" className="py-32 px-6 lg:px-12 bg-neutral-950 border-y border-neutral-900 overflow-hidden">
