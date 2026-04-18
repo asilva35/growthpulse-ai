@@ -2,6 +2,7 @@
 
 export async function submitFreeDiagnostic(data: any) {
   const url = process.env.NEXT_FREE_DIAGNOSTIC_URL;
+  console.log("Sending to: ", url);
   if (!url) {
     console.error("NEXT_FREE_DIAGNOSTIC_URL is not defined");
     return { success: false, error: "Configuration error" };
