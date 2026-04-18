@@ -46,39 +46,62 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import Image from "next/image";
+import { submitFreeDiagnostic, submitContactForm } from "./actions";
+
 
 
 function LeadFormDialog({ isOpen, onOpenChange, variant }: { isOpen: boolean, onOpenChange: (open: boolean) => void, variant: "A" | "B" }) {
   const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Track form submission with variant
-    console.log("[Analytics] Form Submitted", { variant });
+    setError(null);
 
     const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const adSpend = formData.get("adSpend") as string;
+
+    // Simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!name || !email || !adSpend) {
+      setError("All fields are required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid work email.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      adSpend: formData.get("adSpend"),
-      variant: formData.get("variant"), // From hidden field
+      name,
+      email,
+      adSpend,
+      variant: formData.get("variant"),
       utm_source: searchParams.get("utm_source") || "direct",
       utm_medium: searchParams.get("utm_medium") || "none",
       utm_campaign: searchParams.get("utm_campaign") || "none",
     };
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const result = await submitFreeDiagnostic(data);
 
-    console.log("[Data Persistence] Lead captured (A/B Test):", data);
+    if (result.success) {
+      setIsSuccess(true);
+    } else {
+      setError(result.error || "Submission failed. Please try again.");
+    }
 
     setIsSubmitting(false);
-    setIsSuccess(true);
   };
+
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => {
@@ -112,6 +135,13 @@ function LeadFormDialog({ isOpen, onOpenChange, variant }: { isOpen: boolean, on
               onSubmit={handleSubmit}
               className="space-y-4 mt-4"
             >
+              {error && (
+                <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 text-xs rounded-lg flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  {error}
+                </div>
+              )}
+
               <input type="hidden" name="variant" value={variant} />
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-neutral-300">Full Name</Label>
@@ -923,6 +953,52 @@ function MainContent() {
   const [scrolledPos, setScrolledPos] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactError, setContactError] = useState<string | null>(null);
+
+  const searchParams = useSearchParams();
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setContactSubmitting(true);
+    setContactError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const firstName = formData.get("first-name") as string;
+    const lastName = formData.get("last-name") as string;
+    const email = formData.get("contact-email") as string;
+    const message = formData.get("message") as string;
+    const variant = headlineVariant;
+    const utm_source = searchParams.get("utm_source") || "direct";
+    const utm_medium = searchParams.get("utm_medium") || "none";
+    const utm_campaign = searchParams.get("utm_campaign") || "none";
+
+    if (!firstName || !lastName || !email || !message) {
+      setContactError("All fields are required.");
+      setContactSubmitting(false);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setContactError("Please enter a valid email address.");
+      setContactSubmitting(false);
+      return;
+    }
+
+    const result = await submitContactForm({ firstName, lastName, email, message, variant, utm_source, utm_medium, utm_campaign });
+
+    if (result.success) {
+      setContactSuccess(true);
+      (e.target as HTMLFormElement).reset();
+    } else {
+      setContactError(result.error || "Failed to send message. Please try again.");
+    }
+    setContactSubmitting(false);
+  };
+
+
   const navLinks = [
     { name: "One-Click", href: "#integrations" },
     { name: "7 Dimension", href: "#dimensions" },
@@ -999,9 +1075,9 @@ function MainContent() {
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
+            <a
+              key={link.name}
+              href={link.href}
               className="text-sm font-medium text-neutral-400 hover:text-emerald-400 transition-colors uppercase tracking-widest text-[10px]"
             >
               {link.name}
@@ -1013,9 +1089,9 @@ function MainContent() {
           <Button size="lg" className="hidden sm:flex bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 shadow-[0_0_30px_rgba(16,185,129,0.2)] transition-all hover:scale-105" onClick={handleCTA}>
             Get a Diagnostic
           </Button>
-          
+
           {/* Mobile Menu Toggle */}
-          <button 
+          <button
             className="lg:hidden p-2 text-neutral-400 hover:text-white transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -1033,9 +1109,9 @@ function MainContent() {
               className="absolute top-full left-0 right-0 bg-neutral-950 border-b border-white/10 p-6 flex flex-col gap-4 lg:hidden backdrop-blur-2xl"
             >
               {navLinks.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
+                <a
+                  key={link.name}
+                  href={link.href}
                   className="text-lg font-bold text-neutral-200 hover:text-emerald-400"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -1494,7 +1570,7 @@ function MainContent() {
       <section id="contact" className="py-32 px-6 lg:px-12 bg-neutral-900/10 border-t border-neutral-900 overflow-hidden relative">
 
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[160px] rounded-full pointer-events-none" />
-        
+
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
           <div className="space-y-8">
             <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10">Contact Support</Badge>
@@ -1502,7 +1578,7 @@ function MainContent() {
             <p className="text-neutral-400 text-lg leading-relaxed">
               Whether you need a custom integration or strategic growth advice, our engineers are here to help you scale.
             </p>
-            
+
             <div className="space-y-4">
               <div className="flex items-center gap-4 text-neutral-300 group cursor-default">
                 <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
@@ -1520,32 +1596,58 @@ function MainContent() {
           </div>
 
           <Card className="bg-neutral-950/50 border border-neutral-800 p-8 shadow-2xl backdrop-blur-xl">
-            <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); handleCTA(); }}>
+            <form className="space-y-5" onSubmit={handleContactSubmit}>
+              {contactError && (
+                <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 text-sm rounded-lg flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  {contactError}
+                </div>
+              )}
+              {contactSuccess && (
+                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-sm rounded-lg flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" />
+                  Message sent successfully! We&apos;ll be in touch.
+                </div>
+              )}
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="first-name" className="text-neutral-400 text-xs uppercase tracking-widest font-bold">First Name</Label>
-                  <Input id="first-name" placeholder="John" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
+                  <Input id="first-name" name="first-name" placeholder="John" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="last-name" className="text-neutral-400 text-xs uppercase tracking-widest font-bold">Last Name</Label>
-                  <Input id="last-name" placeholder="Doe" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
+                  <Input id="last-name" name="last-name" placeholder="Doe" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
                 </div>
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="contact-email" className="text-neutral-400 text-xs uppercase tracking-widest font-bold">Work Email</Label>
-                <Input id="contact-email" type="email" placeholder="john@company.com" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
+                <Input id="contact-email" name="contact-email" type="email" placeholder="john@company.com" className="bg-neutral-950 border-neutral-800 text-white h-11 focus-visible:ring-emerald-500" />
               </div>
+
               <div className="space-y-2">
                 <Label htmlFor="message" className="text-neutral-400 text-xs uppercase tracking-widest font-bold">How can we help?</Label>
-                <textarea 
-                  id="message" 
-                  className="w-full min-h-[120px] rounded-md border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500 text-white transition-all" 
+                <textarea
+                  id="message"
+                  name="message"
+                  className="w-full min-h-[120px] rounded-md border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500 text-white transition-all"
                   placeholder="Tell us about your growth goals..."
                 />
               </div>
-              <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 transition-all hover:scale-[1.02]">
-                Send message
+
+              <Button
+                type="submit"
+                disabled={contactSubmitting}
+                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
+              >
+                {contactSubmitting ? (
+                  <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
+                    <Settings className="w-4 h-4" />
+                  </motion.div>
+                ) : "Send message"}
               </Button>
+
             </form>
           </Card>
         </div>
@@ -1566,12 +1668,12 @@ function MainContent() {
               The honest friend who reads your dashboards and tells you exactly how to scale. High-performance growth engineering for modern teams.
             </p>
             <div className="flex gap-4">
-               <div className="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center hover:border-emerald-500/50 transition-colors cursor-pointer">
-                 <Globe className="w-4 h-4 text-neutral-400" />
-               </div>
-               <div className="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center hover:border-emerald-500/50 transition-colors cursor-pointer">
-                 <Share2 className="w-4 h-4 text-neutral-400" />
-               </div>
+              <div className="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center hover:border-emerald-500/50 transition-colors cursor-pointer">
+                <Globe className="w-4 h-4 text-neutral-400" />
+              </div>
+              <div className="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center hover:border-emerald-500/50 transition-colors cursor-pointer">
+                <Share2 className="w-4 h-4 text-neutral-400" />
+              </div>
             </div>
           </div>
 
