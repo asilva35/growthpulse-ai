@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 
 export default function Page({ searchParams }: { searchParams: { gtm_debug?: string } }) {
     const isDebug = !!searchParams.gtm_debug;
+    console.log("isDebug Gtm Debug", isDebug);
     return (
         <>
             <Partytown
