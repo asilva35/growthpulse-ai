@@ -43,7 +43,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import Image from "next/image";
-import { submitFreeDiagnostic, submitContactForm } from "../actions";
+import { submitFreeDiagnostic, submitContactForm } from "./actions";
 
 const STATIC_COLOR = "#13FFAA"; // Example static color
 
