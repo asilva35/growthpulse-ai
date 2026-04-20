@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Script from "next/script";
 import OptimizeClient from "./OptimizeClient";
-import Head from "next/head";
 import { Partytown } from "@qwik.dev/partytown/react";
 
 export const metadata: Metadata = {
@@ -33,11 +32,18 @@ export default function Page() {
                 debug={true}
                 forward={["dataLayer.push"]}
                 lib="/~partytown/"
+                resolveUrl={(url) => {
+                    if (url.hostname === 'www.googletagmanager.com' || url.hostname === 'tagassistant.google.com') {
+                        const proxyUrl = new URL('https://cdn.builder.io/api/v1/proxy-api');
+                        proxyUrl.searchParams.append('url', url.href);
+                        return proxyUrl;
+                    }
+                    return url;
+                }}
             />
             <Script
-                strategy="worker" // Next.js detecta automáticamente Partytown con esto
-                type="text/partytown"
                 id="gtm-script"
+                type="text/partytown" // Partytown lo detectará por este tipo
                 dangerouslySetInnerHTML={{
                     __html: `
                         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
