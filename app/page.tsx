@@ -33,9 +33,8 @@ import {
   X
 } from "lucide-react";
 
-
-
-
+import Head from "next/head";
+import { Partytown } from "@qwik.dev/partytown/react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -1771,12 +1770,35 @@ function MainContent() {
 
 export default function Page() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
-      </div>
-    }>
-      <MainContent />
-    </Suspense>
+    <>
+      <Head>
+        <Partytown debug={true} forward={["dataLayer.push"]} />
+        <script
+          type="text/partytown"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-TR9VGQ5G');`,
+          }}
+        />
+      </Head>
+      <Suspense fallback={
+        <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+        </div>
+      }>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-TR9VGQ5G"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+        <MainContent />
+      </Suspense>
+    </>
   );
 }
