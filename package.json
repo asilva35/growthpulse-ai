@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "partytown": "partytown copylib public/~partytown"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
