@@ -43,7 +43,6 @@ import { Label } from "@/components/ui/label";
 
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 import Image from "next/image";
 import { submitFreeDiagnostic, submitContactForm } from "./actions";
 
