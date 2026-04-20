@@ -71,6 +71,9 @@ This project was developed using a **"Vibe Coding"** methodology—leveraging st
 The site is optimized for **Vercel** and is currently live at:  
 [https://growthpulse-ai-one.vercel.app/](https://growthpulse-ai-one.vercel.app/)
 
+Optimize version for production:
+[https://growthpulse-ai-one.vercel.app/optimize](https://growthpulse-ai-one.vercel.app/optimize)
+
 ---
 
 ## 5. Strategic Decisions & Trade-offs
