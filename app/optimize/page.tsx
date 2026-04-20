@@ -25,25 +25,18 @@ export const metadata: Metadata = {
     },
 };
 
-export default function Page() {
+export default function Page({ searchParams }: { searchParams: { gtm_debug?: string } }) {
+    const isDebug = !!searchParams.gtm_debug;
     return (
         <>
             <Partytown
                 debug={true}
                 forward={["dataLayer.push"]}
                 lib="/~partytown/"
-                resolveUrl={(url) => {
-                    if (url.hostname === 'www.googletagmanager.com' || url.hostname === 'tagassistant.google.com') {
-                        const proxyUrl = new URL('https://cdn.builder.io/api/v1/proxy-api');
-                        proxyUrl.searchParams.append('url', url.href);
-                        return proxyUrl;
-                    }
-                    return url;
-                }}
             />
             <Script
                 id="gtm-script"
-                type="text/partytown" // Partytown lo detectará por este tipo
+                type={isDebug ? "text/javascript" : "text/partytown"}
                 dangerouslySetInnerHTML={{
                     __html: `
                         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
