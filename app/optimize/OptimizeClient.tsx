@@ -985,7 +985,7 @@ function AIActionPlan({ handleCTA }: { handleCTA: () => void }) {
     );
 }
 
-export default function OptimizeClient() {
+export default function OptimizeClient({ isDebug }: { isDebug: boolean }) {
     const [headlineVariant, setHeadlineVariant] = useState<"A" | "B">("A");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [scrolledPos, setScrolledPos] = useState(0);
@@ -995,6 +995,8 @@ export default function OptimizeClient() {
     const [contactSubmitting, setContactSubmitting] = useState(false);
     const [contactSuccess, setContactSuccess] = useState(false);
     const [contactError, setContactError] = useState<string | null>(null);
+
+    console.log("isDebug OptimizeClient", isDebug);
 
     const searchParams = useSearchParams();
 

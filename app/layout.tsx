@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://growthpulse.ai"),
   title: "GrowthPulse AI | Your marketing stack, diagnosed in minutes",
   description: "GrowthPulse AI analyzes your marketing stack across 7 dimensions to find wasted ad spend and generate a prioritized 90-day action plan.",
   openGraph: {
