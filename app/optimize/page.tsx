@@ -30,7 +30,7 @@ export default function Page() {
     return (
         <>
             <Head>
-                <Partytown debug={false} forward={["dataLayer.push"]} />
+                <Partytown debug={true} forward={["dataLayer.push"]} />
                 <Script type="text/partytown">
                     {`
                         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
