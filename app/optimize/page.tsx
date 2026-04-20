@@ -1,32 +1,14 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Suspense } from "react";
 import Script from "next/script";
 import OptimizeClient from "./OptimizeClient";
 import { Partytown } from "@qwik.dev/partytown/react";
+import { useSearchParams } from "next/navigation";
 
-export const metadata: Metadata = {
-    title: "GrowthPulse AI Optimize | Your marketing stack, diagnosed in minutes",
-    description: "GrowthPulse AI analyzes your marketing stack across 7 dimensions to find wasted ad spend and generate a prioritized 90-day action plan.",
-    openGraph: {
-        title: "GrowthPulse AI | Honest Marketing Diagnostic",
-        description: "Your marketing stack, diagnosed in minutes. Find wasted spend and optimize ROI.",
-        url: "https://growthpulse.ai",
-        siteName: "GrowthPulse AI",
-        locale: "en_US",
-        type: "website",
-        images: [
-            {
-                url: "/assets/images/mockup-06.png",
-                width: 1400,
-                height: 636,
-                alt: "GrowthPulse AI",
-            },
-        ],
-    },
-};
-
-export default function Page({ searchParams }: { searchParams: { gtm_debug?: string } }) {
-    const isDebug = !!searchParams.gtm_debug;
+export default function Page() {
+    const searchParams = useSearchParams();
+    const isDebug = !!searchParams.get("gtm_debug");
     console.log("isDebug Gtm Debug", isDebug);
     return (
         <>
